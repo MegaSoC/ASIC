@@ -46,3 +46,7 @@
 	path = modules/dukelec-cdbus_ip
 	url = git@github.com:SoCBlaze/dukelec-cdbus_ip.git
 	branch = master
+[submodule "modules/Synopsys-DWC_otg"]
+	path = modules/Synopsys-DWC_otg
+	url = git@github.com:SoCBlaze/Synopsys-DWC_otg.git
+	branch = master
