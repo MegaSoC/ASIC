@@ -1,0 +1,48 @@
+[submodule "modules/SoC"]
+	path = modules/SoC
+	url = git@github.com:SoCBlaze/SoC.git
+	branch = main
+[submodule "modules/Xilinx-primitive"]
+	path = modules/Xilinx-primitive
+	url = git@github.com:SoCBlaze/Xilinx-primitive.git
+	branch = master
+[submodule "modules/t123yh-NaiveMIPS"]
+	path = modules/t123yh-NaiveMIPS
+	url = git@github.com:SoCBlaze/t123yh-NaiveMIPS.git
+	branch = cpu-ng
+[submodule "modules/pulp-common_cells"]
+	path = modules/pulp-common_cells
+	url = git@github.com:SoCBlaze/pulp-common_cells.git
+	branch = master
+[submodule "modules/pulp-axi"]
+	path = modules/pulp-axi
+	url = git@github.com:SoCBlaze/pulp-axi.git
+	branch = master
+[submodule "modules/loongson-blocks"]
+	path = modules/loongson-blocks
+	url = git@github.com:SoCBlaze/loongson-blocks.git
+	branch = master
+[submodule "modules/Xilinx-emaclite"]
+	path = modules/Xilinx-emaclite
+	url = git@github.com:SoCBlaze/Xilinx-emaclite.git
+	branch = master
+[submodule "modules/Xilinx-AXI-Intc"]
+	path = modules/Xilinx-AXI-Intc
+	url = git@github.com:SoCBlaze/Xilinx-AXI-Intc.git
+	branch = master
+[submodule "modules/mczerski-SD-card-controller"]
+	path = modules/mczerski-SD-card-controller
+	url = git@github.com:SoCBlaze/mczerski-SD-card-controller.git
+	branch = master
+[submodule "modules/ZipCPU-wb2axip"]
+	path = modules/ZipCPU-wb2axip
+	url = git@github.com:SoCBlaze/ZipCPU-wb2axip.git
+	branch = master
+[submodule "modules/Xilinx-AXIAHB"]
+	path = modules/Xilinx-AXIAHB
+	url = git@github.com:SoCBlaze/Xilinx-AXIAHB.git
+	branch = master
+[submodule "modules/dukelec-cdbus_ip"]
+	path = modules/dukelec-cdbus_ip
+	url = git@github.com:SoCBlaze/dukelec-cdbus_ip.git
+	branch = master
