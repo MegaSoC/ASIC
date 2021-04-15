@@ -65,7 +65,7 @@ module top(
 `IOBUF_GEN_VEC_SIMPLE(sdram_DQ)
 
 wire [5:0]  mem_axi_awid;
-wire [27:0] mem_axi_awaddr;
+wire [31:0] mem_axi_awaddr;
 wire [7:0]  mem_axi_awlen;
 wire [2:0]  mem_axi_awsize;
 wire [1:0]  mem_axi_awburst;
@@ -81,7 +81,7 @@ wire  [5:0] mem_axi_bid;
 wire  [1:0] mem_axi_bresp;
 wire        mem_axi_bvalid;
 wire [5:0]  mem_axi_arid;
-wire [27:0] mem_axi_araddr;
+wire [31:0] mem_axi_araddr;
 wire [7:0]  mem_axi_arlen;
 wire [2:0]  mem_axi_arsize;
 wire [1:0]  mem_axi_arburst;

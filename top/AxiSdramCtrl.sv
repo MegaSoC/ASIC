@@ -50,7 +50,7 @@ module AxiSdramCtrl (
   output     [1:0]    io_bus_r_payload_resp,
   output              io_bus_r_payload_last,
   output     [12:0]   io_sdram_ADDR,
-  output     [3:0]    io_sdram_BA,
+  output     [1:0]    io_sdram_BA,
   input      [31:0]   io_sdram_DQ_read,
   output     [31:0]   io_sdram_DQ_write,
   output     [31:0]   io_sdram_DQ_writeEnable,
@@ -63,7 +63,7 @@ module AxiSdramCtrl (
   input               clk,
   input               reset
 );
-  wire       [27:0]   _zz_1;
+  wire       [25:0]   _zz_1;
   wire                _zz_2;
   wire                sdramCtrl_1_io_axi_arw_ready;
   wire                sdramCtrl_1_io_axi_w_ready;
@@ -76,7 +76,7 @@ module AxiSdramCtrl (
   wire       [1:0]    sdramCtrl_1_io_axi_r_payload_resp;
   wire                sdramCtrl_1_io_axi_r_payload_last;
   wire       [12:0]   sdramCtrl_1_io_sdram_ADDR;
-  wire       [3:0]    sdramCtrl_1_io_sdram_BA;
+  wire       [1:0]    sdramCtrl_1_io_sdram_BA;
   wire                sdramCtrl_1_io_sdram_CASn;
   wire                sdramCtrl_1_io_sdram_CKE;
   wire                sdramCtrl_1_io_sdram_CSn;
@@ -99,7 +99,7 @@ module AxiSdramCtrl (
   Axi4SharedSdramCtrl sdramCtrl_1 (
     .io_axi_arw_valid            (streamArbiter_1_io_output_valid               ), //i
     .io_axi_arw_ready            (sdramCtrl_1_io_axi_arw_ready                  ), //o
-    .io_axi_arw_payload_addr     (_zz_1[27:0]                                   ), //i
+    .io_axi_arw_payload_addr     (_zz_1[25:0]                                   ), //i
     .io_axi_arw_payload_id       (streamArbiter_1_io_output_payload_id[5:0]     ), //i
     .io_axi_arw_payload_len      (streamArbiter_1_io_output_payload_len[7:0]    ), //i
     .io_axi_arw_payload_size     (streamArbiter_1_io_output_payload_size[2:0]   ), //i
@@ -121,7 +121,7 @@ module AxiSdramCtrl (
     .io_axi_r_payload_resp       (sdramCtrl_1_io_axi_r_payload_resp[1:0]        ), //o
     .io_axi_r_payload_last       (sdramCtrl_1_io_axi_r_payload_last             ), //o
     .io_sdram_ADDR               (sdramCtrl_1_io_sdram_ADDR[12:0]               ), //o
-    .io_sdram_BA                 (sdramCtrl_1_io_sdram_BA[3:0]                  ), //o
+    .io_sdram_BA                 (sdramCtrl_1_io_sdram_BA[1:0]                  ), //o
     .io_sdram_DQ_read            (io_sdram_DQ_read[31:0]                        ), //i
     .io_sdram_DQ_write           (sdramCtrl_1_io_sdram_DQ_write[31:0]           ), //o
     .io_sdram_DQ_writeEnable     (sdramCtrl_1_io_sdram_DQ_writeEnable[31:0]     ), //o
@@ -172,7 +172,7 @@ module AxiSdramCtrl (
   assign io_bus_r_payload_id = sdramCtrl_1_io_axi_r_payload_id;
   assign io_bus_r_payload_resp = sdramCtrl_1_io_axi_r_payload_resp;
   assign io_bus_r_payload_last = sdramCtrl_1_io_axi_r_payload_last;
-  assign _zz_1 = streamArbiter_1_io_output_payload_addr[27:0];
+  assign _zz_1 = streamArbiter_1_io_output_payload_addr[25:0];
   assign _zz_2 = streamArbiter_1_io_chosenOH[1];
   assign io_sdram_ADDR = sdramCtrl_1_io_sdram_ADDR;
   assign io_sdram_BA = sdramCtrl_1_io_sdram_BA;
@@ -281,7 +281,7 @@ endmodule
 module Axi4SharedSdramCtrl (
   input               io_axi_arw_valid,
   output reg          io_axi_arw_ready,
-  input      [27:0]   io_axi_arw_payload_addr,
+  input      [25:0]   io_axi_arw_payload_addr,
   input      [5:0]    io_axi_arw_payload_id,
   input      [7:0]    io_axi_arw_payload_len,
   input      [2:0]    io_axi_arw_payload_size,
@@ -303,7 +303,7 @@ module Axi4SharedSdramCtrl (
   output     [1:0]    io_axi_r_payload_resp,
   output              io_axi_r_payload_last,
   output     [12:0]   io_sdram_ADDR,
-  output     [3:0]    io_sdram_BA,
+  output     [1:0]    io_sdram_BA,
   input      [31:0]   io_sdram_DQ_read,
   output     [31:0]   io_sdram_DQ_write,
   output     [31:0]   io_sdram_DQ_writeEnable,
@@ -316,7 +316,7 @@ module Axi4SharedSdramCtrl (
   input               clk,
   input               reset
 );
-  wire       [25:0]   _zz_3;
+  wire       [23:0]   _zz_3;
   reg        [11:0]   _zz_4;
   wire                ctrl_io_bus_cmd_ready;
   wire                ctrl_io_bus_rsp_valid;
@@ -324,7 +324,7 @@ module Axi4SharedSdramCtrl (
   wire       [5:0]    ctrl_io_bus_rsp_payload_context_id;
   wire                ctrl_io_bus_rsp_payload_context_last;
   wire       [12:0]   ctrl_io_sdram_ADDR;
-  wire       [3:0]    ctrl_io_sdram_BA;
+  wire       [1:0]    ctrl_io_sdram_BA;
   wire                ctrl_io_sdram_CASn;
   wire                ctrl_io_sdram_CKE;
   wire                ctrl_io_sdram_CSn;
@@ -343,7 +343,7 @@ module Axi4SharedSdramCtrl (
   reg                 unburstify_result_valid;
   wire                unburstify_result_ready;
   reg                 unburstify_result_payload_last;
-  reg        [27:0]   unburstify_result_payload_fragment_addr;
+  reg        [25:0]   unburstify_result_payload_fragment_addr;
   reg        [5:0]    unburstify_result_payload_fragment_id;
   reg        [2:0]    unburstify_result_payload_fragment_size;
   reg        [1:0]    unburstify_result_payload_fragment_burst;
@@ -352,15 +352,15 @@ module Axi4SharedSdramCtrl (
   reg                 unburstify_buffer_valid;
   reg        [7:0]    unburstify_buffer_len;
   reg        [7:0]    unburstify_buffer_beat;
-  reg        [27:0]   unburstify_buffer_transaction_addr;
+  reg        [25:0]   unburstify_buffer_transaction_addr;
   reg        [5:0]    unburstify_buffer_transaction_id;
   reg        [2:0]    unburstify_buffer_transaction_size;
   reg        [1:0]    unburstify_buffer_transaction_burst;
   reg                 unburstify_buffer_transaction_write;
   wire                unburstify_buffer_last;
   wire       [1:0]    Axi4Incr_validSize;
-  reg        [27:0]   Axi4Incr_result;
-  wire       [15:0]   Axi4Incr_highCat;
+  reg        [25:0]   Axi4Incr_result;
+  wire       [13:0]   Axi4Incr_highCat;
   wire       [2:0]    Axi4Incr_sizeValue;
   wire       [11:0]   Axi4Incr_alignMask;
   wire       [11:0]   Axi4Incr_base;
@@ -371,7 +371,7 @@ module Axi4SharedSdramCtrl (
   wire                bridge_axiCmd_valid;
   wire                bridge_axiCmd_ready;
   wire                bridge_axiCmd_payload_last;
-  wire       [27:0]   bridge_axiCmd_payload_fragment_addr;
+  wire       [25:0]   bridge_axiCmd_payload_fragment_addr;
   wire       [5:0]    bridge_axiCmd_payload_fragment_id;
   wire       [2:0]    bridge_axiCmd_payload_fragment_size;
   wire       [1:0]    bridge_axiCmd_payload_fragment_burst;
@@ -398,7 +398,7 @@ module Axi4SharedSdramCtrl (
   SdramCtrl ctrl (
     .io_bus_cmd_valid                   (bridge_axiCmd_valid                      ), //i
     .io_bus_cmd_ready                   (ctrl_io_bus_cmd_ready                    ), //o
-    .io_bus_cmd_payload_address         (_zz_3[25:0]                              ), //i
+    .io_bus_cmd_payload_address         (_zz_3[23:0]                              ), //i
     .io_bus_cmd_payload_write           (bridge_axiCmd_payload_fragment_write     ), //i
     .io_bus_cmd_payload_data            (io_axi_w_payload_data[31:0]              ), //i
     .io_bus_cmd_payload_mask            (io_axi_w_payload_strb[3:0]               ), //i
@@ -410,7 +410,7 @@ module Axi4SharedSdramCtrl (
     .io_bus_rsp_payload_context_id      (ctrl_io_bus_rsp_payload_context_id[5:0]  ), //o
     .io_bus_rsp_payload_context_last    (ctrl_io_bus_rsp_payload_context_last     ), //o
     .io_sdram_ADDR                      (ctrl_io_sdram_ADDR[12:0]                 ), //o
-    .io_sdram_BA                        (ctrl_io_sdram_BA[3:0]                    ), //o
+    .io_sdram_BA                        (ctrl_io_sdram_BA[1:0]                    ), //o
     .io_sdram_DQ_read                   (io_sdram_DQ_read[31:0]                   ), //i
     .io_sdram_DQ_write                  (ctrl_io_sdram_DQ_write[31:0]             ), //o
     .io_sdram_DQ_writeEnable            (ctrl_io_sdram_DQ_writeEnable[31:0]       ), //o
@@ -448,7 +448,7 @@ module Axi4SharedSdramCtrl (
 
   assign unburstify_buffer_last = (unburstify_buffer_beat == 8'h01);
   assign Axi4Incr_validSize = unburstify_buffer_transaction_size[1 : 0];
-  assign Axi4Incr_highCat = unburstify_buffer_transaction_addr[27 : 12];
+  assign Axi4Incr_highCat = unburstify_buffer_transaction_addr[25 : 12];
   assign Axi4Incr_sizeValue = {(2'b10 == Axi4Incr_validSize),{(2'b01 == Axi4Incr_validSize),(2'b00 == Axi4Incr_validSize)}};
   assign Axi4Incr_alignMask = {10'd0, _zz_6};
   assign Axi4Incr_base = (_zz_8 & (~ Axi4Incr_alignMask));
@@ -556,7 +556,7 @@ module Axi4SharedSdramCtrl (
   assign bridge_axiCmd_payload_fragment_size = unburstify_result_payload_fragment_size;
   assign bridge_axiCmd_payload_fragment_burst = unburstify_result_payload_fragment_burst;
   assign bridge_axiCmd_payload_fragment_write = unburstify_result_payload_fragment_write;
-  assign _zz_3 = bridge_axiCmd_payload_fragment_addr[27 : 2];
+  assign _zz_3 = bridge_axiCmd_payload_fragment_addr[25 : 2];
   assign bridge_writeRsp_valid = (((bridge_axiCmd_valid && bridge_axiCmd_ready) && bridge_axiCmd_payload_fragment_write) && bridge_axiCmd_payload_last);
   assign bridge_writeRsp_payload_resp = 2'b00;
   assign bridge_writeRsp_payload_id = bridge_axiCmd_payload_fragment_id;
@@ -638,7 +638,7 @@ endmodule
 module SdramCtrl (
   input               io_bus_cmd_valid,
   output reg          io_bus_cmd_ready,
-  input      [25:0]   io_bus_cmd_payload_address,
+  input      [23:0]   io_bus_cmd_payload_address,
   input               io_bus_cmd_payload_write,
   input      [31:0]   io_bus_cmd_payload_data,
   input      [3:0]    io_bus_cmd_payload_mask,
@@ -650,7 +650,7 @@ module SdramCtrl (
   output     [5:0]    io_bus_rsp_payload_context_id,
   output              io_bus_rsp_payload_context_last,
   output     [12:0]   io_sdram_ADDR,
-  output     [3:0]    io_sdram_BA,
+  output     [1:0]    io_sdram_BA,
   input      [31:0]   io_sdram_DQ_read,
   output     [31:0]   io_sdram_DQ_write,
   output     [31:0]   io_sdram_DQ_writeEnable,
@@ -663,28 +663,24 @@ module SdramCtrl (
   input               clk,
   input               reset
 );
-  wire                _zz_29;
-  reg                 _zz_30;
-  reg        [12:0]   _zz_31;
-  reg                 _zz_32;
-  reg                 _zz_33;
+  wire                _zz_17;
+  reg                 _zz_18;
+  reg        [12:0]   _zz_19;
+  reg                 _zz_20;
+  reg                 _zz_21;
   wire                chip_backupIn_fifo_io_push_ready;
   wire                chip_backupIn_fifo_io_pop_valid;
   wire       [31:0]   chip_backupIn_fifo_io_pop_payload_data;
   wire       [5:0]    chip_backupIn_fifo_io_pop_payload_context_id;
   wire                chip_backupIn_fifo_io_pop_payload_context_last;
   wire       [1:0]    chip_backupIn_fifo_io_occupancy;
-  wire                _zz_34;
-  wire                _zz_35;
-  wire                _zz_36;
-  wire       [0:0]    _zz_37;
-  wire       [9:0]    _zz_38;
-  wire       [0:0]    _zz_39;
-  wire       [2:0]    _zz_40;
-  wire       [0:0]    _zz_41;
-  wire       [5:0]    _zz_42;
-  wire       [0:0]    _zz_43;
-  wire       [5:0]    _zz_44;
+  wire                _zz_22;
+  wire                _zz_23;
+  wire                _zz_24;
+  wire       [0:0]    _zz_25;
+  wire       [9:0]    _zz_26;
+  wire       [0:0]    _zz_27;
+  wire       [2:0]    _zz_28;
   wire                refresh_counter_willIncrement;
   wire                refresh_counter_willClear;
   reg        [9:0]    refresh_counter_valueNext;
@@ -703,38 +699,14 @@ module SdramCtrl (
   reg        [12:0]   frontend_banks_2_row;
   reg                 frontend_banks_3_active;
   reg        [12:0]   frontend_banks_3_row;
-  reg                 frontend_banks_4_active;
-  reg        [12:0]   frontend_banks_4_row;
-  reg                 frontend_banks_5_active;
-  reg        [12:0]   frontend_banks_5_row;
-  reg                 frontend_banks_6_active;
-  reg        [12:0]   frontend_banks_6_row;
-  reg                 frontend_banks_7_active;
-  reg        [12:0]   frontend_banks_7_row;
-  reg                 frontend_banks_8_active;
-  reg        [12:0]   frontend_banks_8_row;
-  reg                 frontend_banks_9_active;
-  reg        [12:0]   frontend_banks_9_row;
-  reg                 frontend_banks_10_active;
-  reg        [12:0]   frontend_banks_10_row;
-  reg                 frontend_banks_11_active;
-  reg        [12:0]   frontend_banks_11_row;
-  reg                 frontend_banks_12_active;
-  reg        [12:0]   frontend_banks_12_row;
-  reg                 frontend_banks_13_active;
-  reg        [12:0]   frontend_banks_13_row;
-  reg                 frontend_banks_14_active;
-  reg        [12:0]   frontend_banks_14_row;
-  reg                 frontend_banks_15_active;
-  reg        [12:0]   frontend_banks_15_row;
   wire       [8:0]    frontend_address_column;
-  wire       [3:0]    frontend_address_bank;
+  wire       [1:0]    frontend_address_bank;
   wire       [12:0]   frontend_address_row;
-  wire       [25:0]   _zz_2;
+  wire       [23:0]   _zz_2;
   reg                 frontend_rsp_valid;
   wire                frontend_rsp_ready;
   reg        `SdramCtrlBackendTask_binary_sequential_type frontend_rsp_payload_task;
-  wire       [3:0]    frontend_rsp_payload_bank;
+  wire       [1:0]    frontend_rsp_payload_bank;
   reg        [12:0]   frontend_rsp_payload_rowColumn;
   wire       [31:0]   frontend_rsp_payload_data;
   wire       [3:0]    frontend_rsp_payload_mask;
@@ -748,27 +720,15 @@ module SdramCtrl (
   wire                frontend_bootRefreshCounter_willOverflowIfInc;
   wire                frontend_bootRefreshCounter_willOverflow;
   wire                _zz_3;
-  wire       [15:0]   _zz_4;
+  wire       [3:0]    _zz_4;
   wire                _zz_5;
   wire                _zz_6;
   wire                _zz_7;
   wire                _zz_8;
-  wire                _zz_9;
-  wire                _zz_10;
-  wire                _zz_11;
-  wire                _zz_12;
-  wire                _zz_13;
-  wire                _zz_14;
-  wire                _zz_15;
-  wire                _zz_16;
-  wire                _zz_17;
-  wire                _zz_18;
-  wire                _zz_19;
-  wire                _zz_20;
   wire                bubbleInserter_cmd_valid;
   wire                bubbleInserter_cmd_ready;
   wire       `SdramCtrlBackendTask_binary_sequential_type bubbleInserter_cmd_payload_task;
-  wire       [3:0]    bubbleInserter_cmd_payload_bank;
+  wire       [1:0]    bubbleInserter_cmd_payload_bank;
   wire       [12:0]   bubbleInserter_cmd_payload_rowColumn;
   wire       [31:0]   bubbleInserter_cmd_payload_data;
   wire       [3:0]    bubbleInserter_cmd_payload_mask;
@@ -776,7 +736,7 @@ module SdramCtrl (
   wire                bubbleInserter_cmd_payload_context_last;
   reg                 frontend_rsp_m2sPipe_rValid;
   reg        `SdramCtrlBackendTask_binary_sequential_type frontend_rsp_m2sPipe_rData_task;
-  reg        [3:0]    frontend_rsp_m2sPipe_rData_bank;
+  reg        [1:0]    frontend_rsp_m2sPipe_rData_bank;
   reg        [12:0]   frontend_rsp_m2sPipe_rData_rowColumn;
   reg        [31:0]   frontend_rsp_m2sPipe_rData_data;
   reg        [3:0]    frontend_rsp_m2sPipe_rData_mask;
@@ -785,15 +745,15 @@ module SdramCtrl (
   wire                bubbleInserter_rsp_valid;
   wire                bubbleInserter_rsp_ready;
   wire       `SdramCtrlBackendTask_binary_sequential_type bubbleInserter_rsp_payload_task;
-  wire       [3:0]    bubbleInserter_rsp_payload_bank;
+  wire       [1:0]    bubbleInserter_rsp_payload_bank;
   wire       [12:0]   bubbleInserter_rsp_payload_rowColumn;
   wire       [31:0]   bubbleInserter_rsp_payload_data;
   wire       [3:0]    bubbleInserter_rsp_payload_mask;
   wire       [5:0]    bubbleInserter_rsp_payload_context_id;
   wire                bubbleInserter_rsp_payload_context_last;
   reg                 bubbleInserter_insertBubble;
-  wire                _zz_21;
-  wire       `SdramCtrlBackendTask_binary_sequential_type _zz_22;
+  wire                _zz_9;
+  wire       `SdramCtrlBackendTask_binary_sequential_type _zz_10;
   reg        [0:0]    bubbleInserter_timings_read_counter;
   wire                bubbleInserter_timings_read_busy;
   reg        [1:0]    bubbleInserter_timings_write_counter;
@@ -814,65 +774,17 @@ module SdramCtrl (
   wire                bubbleInserter_timings_banks_3_precharge_busy;
   reg        [2:0]    bubbleInserter_timings_banks_3_active_counter;
   wire                bubbleInserter_timings_banks_3_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_4_precharge_counter;
-  wire                bubbleInserter_timings_banks_4_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_4_active_counter;
-  wire                bubbleInserter_timings_banks_4_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_5_precharge_counter;
-  wire                bubbleInserter_timings_banks_5_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_5_active_counter;
-  wire                bubbleInserter_timings_banks_5_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_6_precharge_counter;
-  wire                bubbleInserter_timings_banks_6_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_6_active_counter;
-  wire                bubbleInserter_timings_banks_6_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_7_precharge_counter;
-  wire                bubbleInserter_timings_banks_7_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_7_active_counter;
-  wire                bubbleInserter_timings_banks_7_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_8_precharge_counter;
-  wire                bubbleInserter_timings_banks_8_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_8_active_counter;
-  wire                bubbleInserter_timings_banks_8_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_9_precharge_counter;
-  wire                bubbleInserter_timings_banks_9_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_9_active_counter;
-  wire                bubbleInserter_timings_banks_9_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_10_precharge_counter;
-  wire                bubbleInserter_timings_banks_10_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_10_active_counter;
-  wire                bubbleInserter_timings_banks_10_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_11_precharge_counter;
-  wire                bubbleInserter_timings_banks_11_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_11_active_counter;
-  wire                bubbleInserter_timings_banks_11_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_12_precharge_counter;
-  wire                bubbleInserter_timings_banks_12_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_12_active_counter;
-  wire                bubbleInserter_timings_banks_12_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_13_precharge_counter;
-  wire                bubbleInserter_timings_banks_13_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_13_active_counter;
-  wire                bubbleInserter_timings_banks_13_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_14_precharge_counter;
-  wire                bubbleInserter_timings_banks_14_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_14_active_counter;
-  wire                bubbleInserter_timings_banks_14_active_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_15_precharge_counter;
-  wire                bubbleInserter_timings_banks_15_precharge_busy;
-  reg        [2:0]    bubbleInserter_timings_banks_15_active_counter;
-  wire                bubbleInserter_timings_banks_15_active_busy;
   wire                chip_cmd_valid;
   wire                chip_cmd_ready;
   wire       `SdramCtrlBackendTask_binary_sequential_type chip_cmd_payload_task;
-  wire       [3:0]    chip_cmd_payload_bank;
+  wire       [1:0]    chip_cmd_payload_bank;
   wire       [12:0]   chip_cmd_payload_rowColumn;
   wire       [31:0]   chip_cmd_payload_data;
   wire       [3:0]    chip_cmd_payload_mask;
   wire       [5:0]    chip_cmd_payload_context_id;
   wire                chip_cmd_payload_context_last;
   reg        [12:0]   chip_sdram_ADDR;
-  reg        [3:0]    chip_sdram_BA;
+  reg        [1:0]    chip_sdram_BA;
   reg        [31:0]   chip_sdram_DQ_read;
   reg        [31:0]   chip_sdram_DQ_write;
   reg        [31:0]   chip_sdram_DQ_writeEnable;
@@ -888,11 +800,11 @@ module SdramCtrl (
   wire                chip_readHistory_2;
   wire                chip_readHistory_3;
   wire                chip_readHistory_4;
-  wire                _zz_23;
-  reg                 _zz_24;
-  reg                 _zz_25;
-  reg                 _zz_26;
-  reg                 _zz_27;
+  wire                _zz_11;
+  reg                 _zz_12;
+  reg                 _zz_13;
+  reg                 _zz_14;
+  reg                 _zz_15;
   reg        [5:0]    chip_cmd_payload_context_delay_1_id;
   reg                 chip_cmd_payload_context_delay_1_last;
   reg        [5:0]    chip_cmd_payload_context_delay_2_id;
@@ -904,7 +816,7 @@ module SdramCtrl (
   wire                chip_sdramCkeNext;
   reg                 chip_sdramCkeInternal;
   reg                 chip_sdramCkeInternal_regNext;
-  wire                _zz_28;
+  wire                _zz_16;
   wire                chip_backupIn_valid;
   wire                chip_backupIn_ready;
   wire       [31:0]   chip_backupIn_payload_data;
@@ -916,22 +828,18 @@ module SdramCtrl (
   reg [127:0] bubbleInserter_cmd_payload_task_string;
   reg [127:0] frontend_rsp_m2sPipe_rData_task_string;
   reg [127:0] bubbleInserter_rsp_payload_task_string;
-  reg [127:0] _zz_22_string;
+  reg [127:0] _zz_10_string;
   reg [127:0] chip_cmd_payload_task_string;
   `endif
 
 
-  assign _zz_34 = (((((((((((((((frontend_banks_0_active || frontend_banks_1_active) || frontend_banks_2_active) || frontend_banks_3_active) || frontend_banks_4_active) || frontend_banks_5_active) || frontend_banks_6_active) || frontend_banks_7_active) || frontend_banks_8_active) || frontend_banks_9_active) || frontend_banks_10_active) || frontend_banks_11_active) || frontend_banks_12_active) || frontend_banks_13_active) || frontend_banks_14_active) || frontend_banks_15_active);
-  assign _zz_35 = (_zz_3 && (_zz_31 != frontend_address_row));
-  assign _zz_36 = (! _zz_3);
-  assign _zz_37 = refresh_counter_willIncrement;
-  assign _zz_38 = {9'd0, _zz_37};
-  assign _zz_39 = frontend_bootRefreshCounter_willIncrement;
-  assign _zz_40 = {2'd0, _zz_39};
-  assign _zz_41 = bubbleInserter_timings_banks_6_precharge_busy;
-  assign _zz_42 = {bubbleInserter_timings_banks_5_precharge_busy,{bubbleInserter_timings_banks_4_precharge_busy,{bubbleInserter_timings_banks_3_precharge_busy,{bubbleInserter_timings_banks_2_precharge_busy,{bubbleInserter_timings_banks_1_precharge_busy,bubbleInserter_timings_banks_0_precharge_busy}}}}};
-  assign _zz_43 = bubbleInserter_timings_banks_6_active_busy;
-  assign _zz_44 = {bubbleInserter_timings_banks_5_active_busy,{bubbleInserter_timings_banks_4_active_busy,{bubbleInserter_timings_banks_3_active_busy,{bubbleInserter_timings_banks_2_active_busy,{bubbleInserter_timings_banks_1_active_busy,bubbleInserter_timings_banks_0_active_busy}}}}};
+  assign _zz_22 = (((frontend_banks_0_active || frontend_banks_1_active) || frontend_banks_2_active) || frontend_banks_3_active);
+  assign _zz_23 = (_zz_3 && (_zz_19 != frontend_address_row));
+  assign _zz_24 = (! _zz_3);
+  assign _zz_25 = refresh_counter_willIncrement;
+  assign _zz_26 = {9'd0, _zz_25};
+  assign _zz_27 = frontend_bootRefreshCounter_willIncrement;
+  assign _zz_28 = {2'd0, _zz_27};
   StreamFifoLowLatency chip_backupIn_fifo (
     .io_push_valid                   (chip_backupIn_valid                                ), //i
     .io_push_ready                   (chip_backupIn_fifo_io_push_ready                   ), //o
@@ -943,145 +851,49 @@ module SdramCtrl (
     .io_pop_payload_data             (chip_backupIn_fifo_io_pop_payload_data[31:0]       ), //o
     .io_pop_payload_context_id       (chip_backupIn_fifo_io_pop_payload_context_id[5:0]  ), //o
     .io_pop_payload_context_last     (chip_backupIn_fifo_io_pop_payload_context_last     ), //o
-    .io_flush                        (_zz_29                                             ), //i
+    .io_flush                        (_zz_17                                             ), //i
     .io_occupancy                    (chip_backupIn_fifo_io_occupancy[1:0]               ), //o
     .clk                             (clk                                                ), //i
     .reset                           (reset                                              )  //i
   );
   always @(*) begin
     case(frontend_address_bank)
-      4'b0000 : begin
-        _zz_30 = frontend_banks_0_active;
-        _zz_31 = frontend_banks_0_row;
+      2'b00 : begin
+        _zz_18 = frontend_banks_0_active;
+        _zz_19 = frontend_banks_0_row;
       end
-      4'b0001 : begin
-        _zz_30 = frontend_banks_1_active;
-        _zz_31 = frontend_banks_1_row;
+      2'b01 : begin
+        _zz_18 = frontend_banks_1_active;
+        _zz_19 = frontend_banks_1_row;
       end
-      4'b0010 : begin
-        _zz_30 = frontend_banks_2_active;
-        _zz_31 = frontend_banks_2_row;
-      end
-      4'b0011 : begin
-        _zz_30 = frontend_banks_3_active;
-        _zz_31 = frontend_banks_3_row;
-      end
-      4'b0100 : begin
-        _zz_30 = frontend_banks_4_active;
-        _zz_31 = frontend_banks_4_row;
-      end
-      4'b0101 : begin
-        _zz_30 = frontend_banks_5_active;
-        _zz_31 = frontend_banks_5_row;
-      end
-      4'b0110 : begin
-        _zz_30 = frontend_banks_6_active;
-        _zz_31 = frontend_banks_6_row;
-      end
-      4'b0111 : begin
-        _zz_30 = frontend_banks_7_active;
-        _zz_31 = frontend_banks_7_row;
-      end
-      4'b1000 : begin
-        _zz_30 = frontend_banks_8_active;
-        _zz_31 = frontend_banks_8_row;
-      end
-      4'b1001 : begin
-        _zz_30 = frontend_banks_9_active;
-        _zz_31 = frontend_banks_9_row;
-      end
-      4'b1010 : begin
-        _zz_30 = frontend_banks_10_active;
-        _zz_31 = frontend_banks_10_row;
-      end
-      4'b1011 : begin
-        _zz_30 = frontend_banks_11_active;
-        _zz_31 = frontend_banks_11_row;
-      end
-      4'b1100 : begin
-        _zz_30 = frontend_banks_12_active;
-        _zz_31 = frontend_banks_12_row;
-      end
-      4'b1101 : begin
-        _zz_30 = frontend_banks_13_active;
-        _zz_31 = frontend_banks_13_row;
-      end
-      4'b1110 : begin
-        _zz_30 = frontend_banks_14_active;
-        _zz_31 = frontend_banks_14_row;
+      2'b10 : begin
+        _zz_18 = frontend_banks_2_active;
+        _zz_19 = frontend_banks_2_row;
       end
       default : begin
-        _zz_30 = frontend_banks_15_active;
-        _zz_31 = frontend_banks_15_row;
+        _zz_18 = frontend_banks_3_active;
+        _zz_19 = frontend_banks_3_row;
       end
     endcase
   end
 
   always @(*) begin
     case(bubbleInserter_cmd_payload_bank)
-      4'b0000 : begin
-        _zz_32 = bubbleInserter_timings_banks_0_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_0_active_busy;
+      2'b00 : begin
+        _zz_20 = bubbleInserter_timings_banks_0_precharge_busy;
+        _zz_21 = bubbleInserter_timings_banks_0_active_busy;
       end
-      4'b0001 : begin
-        _zz_32 = bubbleInserter_timings_banks_1_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_1_active_busy;
+      2'b01 : begin
+        _zz_20 = bubbleInserter_timings_banks_1_precharge_busy;
+        _zz_21 = bubbleInserter_timings_banks_1_active_busy;
       end
-      4'b0010 : begin
-        _zz_32 = bubbleInserter_timings_banks_2_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_2_active_busy;
-      end
-      4'b0011 : begin
-        _zz_32 = bubbleInserter_timings_banks_3_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_3_active_busy;
-      end
-      4'b0100 : begin
-        _zz_32 = bubbleInserter_timings_banks_4_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_4_active_busy;
-      end
-      4'b0101 : begin
-        _zz_32 = bubbleInserter_timings_banks_5_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_5_active_busy;
-      end
-      4'b0110 : begin
-        _zz_32 = bubbleInserter_timings_banks_6_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_6_active_busy;
-      end
-      4'b0111 : begin
-        _zz_32 = bubbleInserter_timings_banks_7_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_7_active_busy;
-      end
-      4'b1000 : begin
-        _zz_32 = bubbleInserter_timings_banks_8_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_8_active_busy;
-      end
-      4'b1001 : begin
-        _zz_32 = bubbleInserter_timings_banks_9_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_9_active_busy;
-      end
-      4'b1010 : begin
-        _zz_32 = bubbleInserter_timings_banks_10_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_10_active_busy;
-      end
-      4'b1011 : begin
-        _zz_32 = bubbleInserter_timings_banks_11_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_11_active_busy;
-      end
-      4'b1100 : begin
-        _zz_32 = bubbleInserter_timings_banks_12_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_12_active_busy;
-      end
-      4'b1101 : begin
-        _zz_32 = bubbleInserter_timings_banks_13_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_13_active_busy;
-      end
-      4'b1110 : begin
-        _zz_32 = bubbleInserter_timings_banks_14_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_14_active_busy;
+      2'b10 : begin
+        _zz_20 = bubbleInserter_timings_banks_2_precharge_busy;
+        _zz_21 = bubbleInserter_timings_banks_2_active_busy;
       end
       default : begin
-        _zz_32 = bubbleInserter_timings_banks_15_precharge_busy;
-        _zz_33 = bubbleInserter_timings_banks_15_active_busy;
+        _zz_20 = bubbleInserter_timings_banks_3_precharge_busy;
+        _zz_21 = bubbleInserter_timings_banks_3_active_busy;
       end
     endcase
   end
@@ -1145,15 +957,15 @@ module SdramCtrl (
     endcase
   end
   always @(*) begin
-    case(_zz_22)
-      `SdramCtrlBackendTask_binary_sequential_MODE : _zz_22_string = "MODE            ";
-      `SdramCtrlBackendTask_binary_sequential_PRECHARGE_ALL : _zz_22_string = "PRECHARGE_ALL   ";
-      `SdramCtrlBackendTask_binary_sequential_PRECHARGE_SINGLE : _zz_22_string = "PRECHARGE_SINGLE";
-      `SdramCtrlBackendTask_binary_sequential_REFRESH : _zz_22_string = "REFRESH         ";
-      `SdramCtrlBackendTask_binary_sequential_ACTIVE : _zz_22_string = "ACTIVE          ";
-      `SdramCtrlBackendTask_binary_sequential_READ : _zz_22_string = "READ            ";
-      `SdramCtrlBackendTask_binary_sequential_WRITE : _zz_22_string = "WRITE           ";
-      default : _zz_22_string = "????????????????";
+    case(_zz_10)
+      `SdramCtrlBackendTask_binary_sequential_MODE : _zz_10_string = "MODE            ";
+      `SdramCtrlBackendTask_binary_sequential_PRECHARGE_ALL : _zz_10_string = "PRECHARGE_ALL   ";
+      `SdramCtrlBackendTask_binary_sequential_PRECHARGE_SINGLE : _zz_10_string = "PRECHARGE_SINGLE";
+      `SdramCtrlBackendTask_binary_sequential_REFRESH : _zz_10_string = "REFRESH         ";
+      `SdramCtrlBackendTask_binary_sequential_ACTIVE : _zz_10_string = "ACTIVE          ";
+      `SdramCtrlBackendTask_binary_sequential_READ : _zz_10_string = "READ            ";
+      `SdramCtrlBackendTask_binary_sequential_WRITE : _zz_10_string = "WRITE           ";
+      default : _zz_10_string = "????????????????";
     endcase
   end
   always @(*) begin
@@ -1177,7 +989,7 @@ module SdramCtrl (
     if(refresh_counter_willOverflow)begin
       refresh_counter_valueNext = 10'h0;
     end else begin
-      refresh_counter_valueNext = (refresh_counter_value + _zz_38);
+      refresh_counter_valueNext = (refresh_counter_value + _zz_26);
     end
     if(refresh_counter_willClear)begin
       refresh_counter_valueNext = 10'h0;
@@ -1188,8 +1000,8 @@ module SdramCtrl (
   assign _zz_1[13 : 0] = 14'h3fff;
   assign _zz_2 = io_bus_cmd_payload_address;
   assign frontend_address_column = _zz_2[8 : 0];
-  assign frontend_address_bank = _zz_2[12 : 9];
-  assign frontend_address_row = _zz_2[25 : 13];
+  assign frontend_address_bank = _zz_2[10 : 9];
+  assign frontend_address_row = _zz_2[23 : 11];
   always @ (*) begin
     frontend_rsp_valid = 1'b0;
     case(frontend_state)
@@ -1230,17 +1042,17 @@ module SdramCtrl (
       end
       default : begin
         if(refresh_pending)begin
-          if(_zz_34)begin
+          if(_zz_22)begin
             frontend_rsp_payload_task = `SdramCtrlBackendTask_binary_sequential_PRECHARGE_ALL;
           end else begin
             frontend_rsp_payload_task = `SdramCtrlBackendTask_binary_sequential_REFRESH;
           end
         end else begin
           if(io_bus_cmd_valid)begin
-            if(_zz_35)begin
+            if(_zz_23)begin
               frontend_rsp_payload_task = `SdramCtrlBackendTask_binary_sequential_PRECHARGE_SINGLE;
             end else begin
-              if(_zz_36)begin
+              if(_zz_24)begin
                 frontend_rsp_payload_task = `SdramCtrlBackendTask_binary_sequential_ACTIVE;
               end else begin
                 frontend_rsp_payload_task = (io_bus_cmd_payload_write ? `SdramCtrlBackendTask_binary_sequential_WRITE : `SdramCtrlBackendTask_binary_sequential_READ);
@@ -1265,8 +1077,8 @@ module SdramCtrl (
       default : begin
         if(! refresh_pending) begin
           if(io_bus_cmd_valid)begin
-            if(! _zz_35) begin
-              if(! _zz_36) begin
+            if(! _zz_23) begin
+              if(! _zz_24) begin
                 frontend_rsp_payload_rowColumn = {4'd0, frontend_address_column};
               end
             end
@@ -1292,8 +1104,8 @@ module SdramCtrl (
       default : begin
         if(! refresh_pending) begin
           if(io_bus_cmd_valid)begin
-            if(! _zz_35) begin
-              if(! _zz_36) begin
+            if(! _zz_23) begin
+              if(! _zz_24) begin
                 io_bus_cmd_ready = frontend_rsp_ready;
               end
             end
@@ -1324,30 +1136,18 @@ module SdramCtrl (
   assign frontend_bootRefreshCounter_willOverflowIfInc = (frontend_bootRefreshCounter_value == 3'b111);
   assign frontend_bootRefreshCounter_willOverflow = (frontend_bootRefreshCounter_willOverflowIfInc && frontend_bootRefreshCounter_willIncrement);
   always @ (*) begin
-    frontend_bootRefreshCounter_valueNext = (frontend_bootRefreshCounter_value + _zz_40);
+    frontend_bootRefreshCounter_valueNext = (frontend_bootRefreshCounter_value + _zz_28);
     if(frontend_bootRefreshCounter_willClear)begin
       frontend_bootRefreshCounter_valueNext = 3'b000;
     end
   end
 
-  assign _zz_3 = _zz_30;
-  assign _zz_4 = ({15'd0,1'b1} <<< frontend_address_bank);
+  assign _zz_3 = _zz_18;
+  assign _zz_4 = ({3'd0,1'b1} <<< frontend_address_bank);
   assign _zz_5 = _zz_4[0];
   assign _zz_6 = _zz_4[1];
   assign _zz_7 = _zz_4[2];
   assign _zz_8 = _zz_4[3];
-  assign _zz_9 = _zz_4[4];
-  assign _zz_10 = _zz_4[5];
-  assign _zz_11 = _zz_4[6];
-  assign _zz_12 = _zz_4[7];
-  assign _zz_13 = _zz_4[8];
-  assign _zz_14 = _zz_4[9];
-  assign _zz_15 = _zz_4[10];
-  assign _zz_16 = _zz_4[11];
-  assign _zz_17 = _zz_4[12];
-  assign _zz_18 = _zz_4[13];
-  assign _zz_19 = _zz_4[14];
-  assign _zz_20 = _zz_4[15];
   assign frontend_rsp_ready = ((1'b1 && (! bubbleInserter_cmd_valid)) || bubbleInserter_cmd_ready);
   assign bubbleInserter_cmd_valid = frontend_rsp_m2sPipe_rValid;
   assign bubbleInserter_cmd_payload_task = frontend_rsp_m2sPipe_rData_task;
@@ -1365,16 +1165,16 @@ module SdramCtrl (
           bubbleInserter_insertBubble = bubbleInserter_timings_banks_0_active_busy;
         end
         `SdramCtrlBackendTask_binary_sequential_PRECHARGE_ALL : begin
-          bubbleInserter_insertBubble = ({bubbleInserter_timings_banks_15_precharge_busy,{bubbleInserter_timings_banks_14_precharge_busy,{bubbleInserter_timings_banks_13_precharge_busy,{bubbleInserter_timings_banks_12_precharge_busy,{bubbleInserter_timings_banks_11_precharge_busy,{bubbleInserter_timings_banks_10_precharge_busy,{bubbleInserter_timings_banks_9_precharge_busy,{bubbleInserter_timings_banks_8_precharge_busy,{bubbleInserter_timings_banks_7_precharge_busy,{_zz_41,_zz_42}}}}}}}}}} != 16'h0);
+          bubbleInserter_insertBubble = ({bubbleInserter_timings_banks_3_precharge_busy,{bubbleInserter_timings_banks_2_precharge_busy,{bubbleInserter_timings_banks_1_precharge_busy,bubbleInserter_timings_banks_0_precharge_busy}}} != 4'b0000);
         end
         `SdramCtrlBackendTask_binary_sequential_PRECHARGE_SINGLE : begin
-          bubbleInserter_insertBubble = _zz_32;
+          bubbleInserter_insertBubble = _zz_20;
         end
         `SdramCtrlBackendTask_binary_sequential_REFRESH : begin
-          bubbleInserter_insertBubble = ({bubbleInserter_timings_banks_15_active_busy,{bubbleInserter_timings_banks_14_active_busy,{bubbleInserter_timings_banks_13_active_busy,{bubbleInserter_timings_banks_12_active_busy,{bubbleInserter_timings_banks_11_active_busy,{bubbleInserter_timings_banks_10_active_busy,{bubbleInserter_timings_banks_9_active_busy,{bubbleInserter_timings_banks_8_active_busy,{bubbleInserter_timings_banks_7_active_busy,{_zz_43,_zz_44}}}}}}}}}} != 16'h0);
+          bubbleInserter_insertBubble = ({bubbleInserter_timings_banks_3_active_busy,{bubbleInserter_timings_banks_2_active_busy,{bubbleInserter_timings_banks_1_active_busy,bubbleInserter_timings_banks_0_active_busy}}} != 4'b0000);
         end
         `SdramCtrlBackendTask_binary_sequential_ACTIVE : begin
-          bubbleInserter_insertBubble = _zz_33;
+          bubbleInserter_insertBubble = _zz_21;
         end
         `SdramCtrlBackendTask_binary_sequential_READ : begin
           bubbleInserter_insertBubble = bubbleInserter_timings_read_busy;
@@ -1386,11 +1186,11 @@ module SdramCtrl (
     end
   end
 
-  assign _zz_21 = (! bubbleInserter_insertBubble);
-  assign bubbleInserter_cmd_ready = (bubbleInserter_rsp_ready && _zz_21);
-  assign _zz_22 = bubbleInserter_cmd_payload_task;
-  assign bubbleInserter_rsp_valid = (bubbleInserter_cmd_valid && _zz_21);
-  assign bubbleInserter_rsp_payload_task = _zz_22;
+  assign _zz_9 = (! bubbleInserter_insertBubble);
+  assign bubbleInserter_cmd_ready = (bubbleInserter_rsp_ready && _zz_9);
+  assign _zz_10 = bubbleInserter_cmd_payload_task;
+  assign bubbleInserter_rsp_valid = (bubbleInserter_cmd_valid && _zz_9);
+  assign bubbleInserter_rsp_payload_task = _zz_10;
   assign bubbleInserter_rsp_payload_bank = bubbleInserter_cmd_payload_bank;
   assign bubbleInserter_rsp_payload_rowColumn = bubbleInserter_cmd_payload_rowColumn;
   assign bubbleInserter_rsp_payload_data = bubbleInserter_cmd_payload_data;
@@ -1407,30 +1207,6 @@ module SdramCtrl (
   assign bubbleInserter_timings_banks_2_active_busy = (bubbleInserter_timings_banks_2_active_counter != 3'b000);
   assign bubbleInserter_timings_banks_3_precharge_busy = (bubbleInserter_timings_banks_3_precharge_counter != 3'b000);
   assign bubbleInserter_timings_banks_3_active_busy = (bubbleInserter_timings_banks_3_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_4_precharge_busy = (bubbleInserter_timings_banks_4_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_4_active_busy = (bubbleInserter_timings_banks_4_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_5_precharge_busy = (bubbleInserter_timings_banks_5_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_5_active_busy = (bubbleInserter_timings_banks_5_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_6_precharge_busy = (bubbleInserter_timings_banks_6_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_6_active_busy = (bubbleInserter_timings_banks_6_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_7_precharge_busy = (bubbleInserter_timings_banks_7_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_7_active_busy = (bubbleInserter_timings_banks_7_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_8_precharge_busy = (bubbleInserter_timings_banks_8_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_8_active_busy = (bubbleInserter_timings_banks_8_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_9_precharge_busy = (bubbleInserter_timings_banks_9_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_9_active_busy = (bubbleInserter_timings_banks_9_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_10_precharge_busy = (bubbleInserter_timings_banks_10_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_10_active_busy = (bubbleInserter_timings_banks_10_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_11_precharge_busy = (bubbleInserter_timings_banks_11_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_11_active_busy = (bubbleInserter_timings_banks_11_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_12_precharge_busy = (bubbleInserter_timings_banks_12_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_12_active_busy = (bubbleInserter_timings_banks_12_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_13_precharge_busy = (bubbleInserter_timings_banks_13_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_13_active_busy = (bubbleInserter_timings_banks_13_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_14_precharge_busy = (bubbleInserter_timings_banks_14_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_14_active_busy = (bubbleInserter_timings_banks_14_active_counter != 3'b000);
-  assign bubbleInserter_timings_banks_15_precharge_busy = (bubbleInserter_timings_banks_15_precharge_counter != 3'b000);
-  assign bubbleInserter_timings_banks_15_active_busy = (bubbleInserter_timings_banks_15_active_counter != 3'b000);
   assign chip_cmd_valid = bubbleInserter_rsp_valid;
   assign bubbleInserter_rsp_ready = chip_cmd_ready;
   assign chip_cmd_payload_task = bubbleInserter_rsp_payload_task;
@@ -1450,15 +1226,15 @@ module SdramCtrl (
   assign io_sdram_CSn = chip_sdram_CSn;
   assign io_sdram_RASn = chip_sdram_RASn;
   assign io_sdram_WEn = chip_sdram_WEn;
-  assign _zz_23 = (chip_cmd_valid && ((chip_cmd_payload_task == `SdramCtrlBackendTask_binary_sequential_READ) || 1'b0));
-  assign chip_readHistory_0 = _zz_23;
-  assign chip_readHistory_1 = _zz_24;
-  assign chip_readHistory_2 = _zz_25;
-  assign chip_readHistory_3 = _zz_26;
-  assign chip_readHistory_4 = _zz_27;
+  assign _zz_11 = (chip_cmd_valid && ((chip_cmd_payload_task == `SdramCtrlBackendTask_binary_sequential_READ) || 1'b0));
+  assign chip_readHistory_0 = _zz_11;
+  assign chip_readHistory_1 = _zz_12;
+  assign chip_readHistory_2 = _zz_13;
+  assign chip_readHistory_3 = _zz_14;
+  assign chip_readHistory_4 = _zz_15;
   assign chip_sdramCkeNext = (! (({chip_readHistory_4,{chip_readHistory_3,{chip_readHistory_2,{chip_readHistory_1,chip_readHistory_0}}}} != 5'h0) && (! io_bus_rsp_ready)));
   assign chip_remoteCke = chip_sdramCkeInternal_regNext;
-  assign _zz_28 = (! chip_readHistory_0);
+  assign _zz_16 = (! chip_readHistory_0);
   assign chip_backupIn_valid = (chip_readHistory_4 && chip_remoteCke);
   assign chip_backupIn_payload_data = chip_sdram_DQ_read;
   assign chip_backupIn_payload_context_id = chip_contextDelayed_id;
@@ -1469,7 +1245,7 @@ module SdramCtrl (
   assign io_bus_rsp_payload_context_id = chip_backupIn_fifo_io_pop_payload_context_id;
   assign io_bus_rsp_payload_context_last = chip_backupIn_fifo_io_pop_payload_context_last;
   assign chip_cmd_ready = chip_remoteCke;
-  assign _zz_29 = 1'b0;
+  assign _zz_17 = 1'b0;
   always @ (posedge clk or posedge reset) begin
     if (reset) begin
       refresh_counter_value <= 10'h0;
@@ -1480,18 +1256,6 @@ module SdramCtrl (
       frontend_banks_1_active <= 1'b0;
       frontend_banks_2_active <= 1'b0;
       frontend_banks_3_active <= 1'b0;
-      frontend_banks_4_active <= 1'b0;
-      frontend_banks_5_active <= 1'b0;
-      frontend_banks_6_active <= 1'b0;
-      frontend_banks_7_active <= 1'b0;
-      frontend_banks_8_active <= 1'b0;
-      frontend_banks_9_active <= 1'b0;
-      frontend_banks_10_active <= 1'b0;
-      frontend_banks_11_active <= 1'b0;
-      frontend_banks_12_active <= 1'b0;
-      frontend_banks_13_active <= 1'b0;
-      frontend_banks_14_active <= 1'b0;
-      frontend_banks_15_active <= 1'b0;
       frontend_state <= `SdramCtrlFrontendState_binary_sequential_BOOT_PRECHARGE;
       frontend_bootRefreshCounter_value <= 3'b000;
       frontend_rsp_m2sPipe_rValid <= 1'b0;
@@ -1505,34 +1269,10 @@ module SdramCtrl (
       bubbleInserter_timings_banks_2_active_counter <= 3'b000;
       bubbleInserter_timings_banks_3_precharge_counter <= 3'b000;
       bubbleInserter_timings_banks_3_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_4_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_4_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_5_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_5_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_6_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_6_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_7_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_7_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_8_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_8_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_9_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_9_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_10_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_10_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_11_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_11_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_12_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_12_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_13_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_13_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_14_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_14_active_counter <= 3'b000;
-      bubbleInserter_timings_banks_15_precharge_counter <= 3'b000;
-      bubbleInserter_timings_banks_15_active_counter <= 3'b000;
-      _zz_24 <= 1'b0;
-      _zz_25 <= 1'b0;
-      _zz_26 <= 1'b0;
-      _zz_27 <= 1'b0;
+      _zz_12 <= 1'b0;
+      _zz_13 <= 1'b0;
+      _zz_14 <= 1'b0;
+      _zz_15 <= 1'b0;
       chip_sdramCkeInternal <= 1'b1;
       chip_sdramCkeInternal_regNext <= 1'b1;
     end else begin
@@ -1569,24 +1309,12 @@ module SdramCtrl (
         end
         default : begin
           if(refresh_pending)begin
-            if(_zz_34)begin
+            if(_zz_22)begin
               if(frontend_rsp_ready)begin
                 frontend_banks_0_active <= 1'b0;
                 frontend_banks_1_active <= 1'b0;
                 frontend_banks_2_active <= 1'b0;
                 frontend_banks_3_active <= 1'b0;
-                frontend_banks_4_active <= 1'b0;
-                frontend_banks_5_active <= 1'b0;
-                frontend_banks_6_active <= 1'b0;
-                frontend_banks_7_active <= 1'b0;
-                frontend_banks_8_active <= 1'b0;
-                frontend_banks_9_active <= 1'b0;
-                frontend_banks_10_active <= 1'b0;
-                frontend_banks_11_active <= 1'b0;
-                frontend_banks_12_active <= 1'b0;
-                frontend_banks_13_active <= 1'b0;
-                frontend_banks_14_active <= 1'b0;
-                frontend_banks_15_active <= 1'b0;
               end
             end else begin
               if(frontend_rsp_ready)begin
@@ -1595,7 +1323,7 @@ module SdramCtrl (
             end
           end else begin
             if(io_bus_cmd_valid)begin
-              if(_zz_35)begin
+              if(_zz_23)begin
                 if(frontend_rsp_ready)begin
                   if(_zz_5)begin
                     frontend_banks_0_active <= 1'b0;
@@ -1609,45 +1337,9 @@ module SdramCtrl (
                   if(_zz_8)begin
                     frontend_banks_3_active <= 1'b0;
                   end
-                  if(_zz_9)begin
-                    frontend_banks_4_active <= 1'b0;
-                  end
-                  if(_zz_10)begin
-                    frontend_banks_5_active <= 1'b0;
-                  end
-                  if(_zz_11)begin
-                    frontend_banks_6_active <= 1'b0;
-                  end
-                  if(_zz_12)begin
-                    frontend_banks_7_active <= 1'b0;
-                  end
-                  if(_zz_13)begin
-                    frontend_banks_8_active <= 1'b0;
-                  end
-                  if(_zz_14)begin
-                    frontend_banks_9_active <= 1'b0;
-                  end
-                  if(_zz_15)begin
-                    frontend_banks_10_active <= 1'b0;
-                  end
-                  if(_zz_16)begin
-                    frontend_banks_11_active <= 1'b0;
-                  end
-                  if(_zz_17)begin
-                    frontend_banks_12_active <= 1'b0;
-                  end
-                  if(_zz_18)begin
-                    frontend_banks_13_active <= 1'b0;
-                  end
-                  if(_zz_19)begin
-                    frontend_banks_14_active <= 1'b0;
-                  end
-                  if(_zz_20)begin
-                    frontend_banks_15_active <= 1'b0;
-                  end
                 end
               end else begin
-                if(_zz_36)begin
+                if(_zz_24)begin
                   if(frontend_rsp_ready)begin
                     if(_zz_5)begin
                       frontend_banks_0_active <= 1'b1;
@@ -1660,42 +1352,6 @@ module SdramCtrl (
                     end
                     if(_zz_8)begin
                       frontend_banks_3_active <= 1'b1;
-                    end
-                    if(_zz_9)begin
-                      frontend_banks_4_active <= 1'b1;
-                    end
-                    if(_zz_10)begin
-                      frontend_banks_5_active <= 1'b1;
-                    end
-                    if(_zz_11)begin
-                      frontend_banks_6_active <= 1'b1;
-                    end
-                    if(_zz_12)begin
-                      frontend_banks_7_active <= 1'b1;
-                    end
-                    if(_zz_13)begin
-                      frontend_banks_8_active <= 1'b1;
-                    end
-                    if(_zz_14)begin
-                      frontend_banks_9_active <= 1'b1;
-                    end
-                    if(_zz_15)begin
-                      frontend_banks_10_active <= 1'b1;
-                    end
-                    if(_zz_16)begin
-                      frontend_banks_11_active <= 1'b1;
-                    end
-                    if(_zz_17)begin
-                      frontend_banks_12_active <= 1'b1;
-                    end
-                    if(_zz_18)begin
-                      frontend_banks_13_active <= 1'b1;
-                    end
-                    if(_zz_19)begin
-                      frontend_banks_14_active <= 1'b1;
-                    end
-                    if(_zz_20)begin
-                      frontend_banks_15_active <= 1'b1;
                     end
                   end
                 end
@@ -1737,78 +1393,6 @@ module SdramCtrl (
       if((bubbleInserter_timings_banks_3_active_busy && bubbleInserter_rsp_ready))begin
         bubbleInserter_timings_banks_3_active_counter <= (bubbleInserter_timings_banks_3_active_counter - 3'b001);
       end
-      if((bubbleInserter_timings_banks_4_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_4_precharge_counter <= (bubbleInserter_timings_banks_4_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_4_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_4_active_counter <= (bubbleInserter_timings_banks_4_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_5_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_5_precharge_counter <= (bubbleInserter_timings_banks_5_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_5_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_5_active_counter <= (bubbleInserter_timings_banks_5_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_6_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_6_precharge_counter <= (bubbleInserter_timings_banks_6_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_6_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_6_active_counter <= (bubbleInserter_timings_banks_6_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_7_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_7_precharge_counter <= (bubbleInserter_timings_banks_7_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_7_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_7_active_counter <= (bubbleInserter_timings_banks_7_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_8_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_8_precharge_counter <= (bubbleInserter_timings_banks_8_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_8_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_8_active_counter <= (bubbleInserter_timings_banks_8_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_9_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_9_precharge_counter <= (bubbleInserter_timings_banks_9_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_9_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_9_active_counter <= (bubbleInserter_timings_banks_9_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_10_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_10_precharge_counter <= (bubbleInserter_timings_banks_10_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_10_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_10_active_counter <= (bubbleInserter_timings_banks_10_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_11_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_11_precharge_counter <= (bubbleInserter_timings_banks_11_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_11_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_11_active_counter <= (bubbleInserter_timings_banks_11_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_12_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_12_precharge_counter <= (bubbleInserter_timings_banks_12_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_12_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_12_active_counter <= (bubbleInserter_timings_banks_12_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_13_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_13_precharge_counter <= (bubbleInserter_timings_banks_13_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_13_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_13_active_counter <= (bubbleInserter_timings_banks_13_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_14_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_14_precharge_counter <= (bubbleInserter_timings_banks_14_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_14_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_14_active_counter <= (bubbleInserter_timings_banks_14_active_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_15_precharge_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_15_precharge_counter <= (bubbleInserter_timings_banks_15_precharge_counter - 3'b001);
-      end
-      if((bubbleInserter_timings_banks_15_active_busy && bubbleInserter_rsp_ready))begin
-        bubbleInserter_timings_banks_15_active_counter <= (bubbleInserter_timings_banks_15_active_counter - 3'b001);
-      end
       if(bubbleInserter_cmd_valid)begin
         case(bubbleInserter_cmd_payload_task)
           `SdramCtrlBackendTask_binary_sequential_MODE : begin
@@ -1825,42 +1409,6 @@ module SdramCtrl (
               if((bubbleInserter_timings_banks_3_active_counter <= 3'b001))begin
                 bubbleInserter_timings_banks_3_active_counter <= 3'b001;
               end
-              if((bubbleInserter_timings_banks_4_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_4_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_5_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_5_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_6_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_6_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_7_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_7_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_8_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_8_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_9_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_9_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_10_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_10_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_11_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_11_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_12_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_12_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_13_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_13_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_14_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_14_active_counter <= 3'b001;
-              end
-              if((bubbleInserter_timings_banks_15_active_counter <= 3'b001))begin
-                bubbleInserter_timings_banks_15_active_counter <= 3'b001;
-              end
             end
           end
           `SdramCtrlBackendTask_binary_sequential_PRECHARGE_ALL : begin
@@ -1872,84 +1420,24 @@ module SdramCtrl (
           end
           `SdramCtrlBackendTask_binary_sequential_PRECHARGE_SINGLE : begin
             if(bubbleInserter_cmd_ready)begin
-              if((bubbleInserter_cmd_payload_bank == 4'b0000))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b00))begin
                 if((bubbleInserter_timings_banks_0_active_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_0_active_counter <= 3'b001;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0001))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b01))begin
                 if((bubbleInserter_timings_banks_1_active_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_1_active_counter <= 3'b001;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0010))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b10))begin
                 if((bubbleInserter_timings_banks_2_active_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_2_active_counter <= 3'b001;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0011))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b11))begin
                 if((bubbleInserter_timings_banks_3_active_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_3_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0100))begin
-                if((bubbleInserter_timings_banks_4_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_4_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0101))begin
-                if((bubbleInserter_timings_banks_5_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_5_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0110))begin
-                if((bubbleInserter_timings_banks_6_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_6_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0111))begin
-                if((bubbleInserter_timings_banks_7_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_7_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1000))begin
-                if((bubbleInserter_timings_banks_8_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_8_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1001))begin
-                if((bubbleInserter_timings_banks_9_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_9_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1010))begin
-                if((bubbleInserter_timings_banks_10_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_10_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1011))begin
-                if((bubbleInserter_timings_banks_11_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_11_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1100))begin
-                if((bubbleInserter_timings_banks_12_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_12_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1101))begin
-                if((bubbleInserter_timings_banks_13_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_13_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1110))begin
-                if((bubbleInserter_timings_banks_14_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_14_active_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1111))begin
-                if((bubbleInserter_timings_banks_15_active_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_15_active_counter <= 3'b001;
                 end
               end
             end
@@ -1968,42 +1456,6 @@ module SdramCtrl (
               if((bubbleInserter_timings_banks_3_active_counter <= 3'b110))begin
                 bubbleInserter_timings_banks_3_active_counter <= 3'b110;
               end
-              if((bubbleInserter_timings_banks_4_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_4_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_5_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_5_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_6_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_6_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_7_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_7_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_8_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_8_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_9_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_9_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_10_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_10_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_11_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_11_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_12_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_12_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_13_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_13_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_14_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_14_active_counter <= 3'b110;
-              end
-              if((bubbleInserter_timings_banks_15_active_counter <= 3'b110))begin
-                bubbleInserter_timings_banks_15_active_counter <= 3'b110;
-              end
             end
           end
           `SdramCtrlBackendTask_binary_sequential_ACTIVE : begin
@@ -2012,164 +1464,44 @@ module SdramCtrl (
                 bubbleInserter_timings_write_counter <= 2'b01;
               end
               bubbleInserter_timings_read_counter <= 1'b1;
-              if((bubbleInserter_cmd_payload_bank == 4'b0000))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b00))begin
                 if((bubbleInserter_timings_banks_0_precharge_counter <= 3'b011))begin
                   bubbleInserter_timings_banks_0_precharge_counter <= 3'b011;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0001))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b01))begin
                 if((bubbleInserter_timings_banks_1_precharge_counter <= 3'b011))begin
                   bubbleInserter_timings_banks_1_precharge_counter <= 3'b011;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0010))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b10))begin
                 if((bubbleInserter_timings_banks_2_precharge_counter <= 3'b011))begin
                   bubbleInserter_timings_banks_2_precharge_counter <= 3'b011;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0011))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b11))begin
                 if((bubbleInserter_timings_banks_3_precharge_counter <= 3'b011))begin
                   bubbleInserter_timings_banks_3_precharge_counter <= 3'b011;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0100))begin
-                if((bubbleInserter_timings_banks_4_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_4_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0101))begin
-                if((bubbleInserter_timings_banks_5_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_5_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0110))begin
-                if((bubbleInserter_timings_banks_6_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_6_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0111))begin
-                if((bubbleInserter_timings_banks_7_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_7_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1000))begin
-                if((bubbleInserter_timings_banks_8_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_8_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1001))begin
-                if((bubbleInserter_timings_banks_9_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_9_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1010))begin
-                if((bubbleInserter_timings_banks_10_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_10_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1011))begin
-                if((bubbleInserter_timings_banks_11_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_11_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1100))begin
-                if((bubbleInserter_timings_banks_12_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_12_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1101))begin
-                if((bubbleInserter_timings_banks_13_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_13_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1110))begin
-                if((bubbleInserter_timings_banks_14_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_14_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1111))begin
-                if((bubbleInserter_timings_banks_15_precharge_counter <= 3'b011))begin
-                  bubbleInserter_timings_banks_15_precharge_counter <= 3'b011;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0000))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b00))begin
                 if((bubbleInserter_timings_banks_0_active_counter <= 3'b101))begin
                   bubbleInserter_timings_banks_0_active_counter <= 3'b101;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0001))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b01))begin
                 if((bubbleInserter_timings_banks_1_active_counter <= 3'b101))begin
                   bubbleInserter_timings_banks_1_active_counter <= 3'b101;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0010))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b10))begin
                 if((bubbleInserter_timings_banks_2_active_counter <= 3'b101))begin
                   bubbleInserter_timings_banks_2_active_counter <= 3'b101;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0011))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b11))begin
                 if((bubbleInserter_timings_banks_3_active_counter <= 3'b101))begin
                   bubbleInserter_timings_banks_3_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0100))begin
-                if((bubbleInserter_timings_banks_4_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_4_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0101))begin
-                if((bubbleInserter_timings_banks_5_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_5_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0110))begin
-                if((bubbleInserter_timings_banks_6_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_6_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0111))begin
-                if((bubbleInserter_timings_banks_7_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_7_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1000))begin
-                if((bubbleInserter_timings_banks_8_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_8_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1001))begin
-                if((bubbleInserter_timings_banks_9_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_9_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1010))begin
-                if((bubbleInserter_timings_banks_10_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_10_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1011))begin
-                if((bubbleInserter_timings_banks_11_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_11_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1100))begin
-                if((bubbleInserter_timings_banks_12_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_12_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1101))begin
-                if((bubbleInserter_timings_banks_13_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_13_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1110))begin
-                if((bubbleInserter_timings_banks_14_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_14_active_counter <= 3'b101;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1111))begin
-                if((bubbleInserter_timings_banks_15_active_counter <= 3'b101))begin
-                  bubbleInserter_timings_banks_15_active_counter <= 3'b101;
                 end
               end
             end
@@ -2183,84 +1515,24 @@ module SdramCtrl (
           end
           default : begin
             if(bubbleInserter_cmd_ready)begin
-              if((bubbleInserter_cmd_payload_bank == 4'b0000))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b00))begin
                 if((bubbleInserter_timings_banks_0_precharge_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_0_precharge_counter <= 3'b001;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0001))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b01))begin
                 if((bubbleInserter_timings_banks_1_precharge_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_1_precharge_counter <= 3'b001;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0010))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b10))begin
                 if((bubbleInserter_timings_banks_2_precharge_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_2_precharge_counter <= 3'b001;
                 end
               end
-              if((bubbleInserter_cmd_payload_bank == 4'b0011))begin
+              if((bubbleInserter_cmd_payload_bank == 2'b11))begin
                 if((bubbleInserter_timings_banks_3_precharge_counter <= 3'b001))begin
                   bubbleInserter_timings_banks_3_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0100))begin
-                if((bubbleInserter_timings_banks_4_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_4_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0101))begin
-                if((bubbleInserter_timings_banks_5_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_5_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0110))begin
-                if((bubbleInserter_timings_banks_6_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_6_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b0111))begin
-                if((bubbleInserter_timings_banks_7_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_7_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1000))begin
-                if((bubbleInserter_timings_banks_8_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_8_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1001))begin
-                if((bubbleInserter_timings_banks_9_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_9_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1010))begin
-                if((bubbleInserter_timings_banks_10_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_10_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1011))begin
-                if((bubbleInserter_timings_banks_11_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_11_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1100))begin
-                if((bubbleInserter_timings_banks_12_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_12_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1101))begin
-                if((bubbleInserter_timings_banks_13_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_13_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1110))begin
-                if((bubbleInserter_timings_banks_14_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_14_precharge_counter <= 3'b001;
-                end
-              end
-              if((bubbleInserter_cmd_payload_bank == 4'b1111))begin
-                if((bubbleInserter_timings_banks_15_precharge_counter <= 3'b001))begin
-                  bubbleInserter_timings_banks_15_precharge_counter <= 3'b001;
                 end
               end
             end
@@ -2268,16 +1540,16 @@ module SdramCtrl (
         endcase
       end
       if(chip_remoteCke)begin
-        _zz_24 <= _zz_23;
+        _zz_12 <= _zz_11;
       end
       if(chip_remoteCke)begin
-        _zz_25 <= _zz_24;
+        _zz_13 <= _zz_12;
       end
       if(chip_remoteCke)begin
-        _zz_26 <= _zz_25;
+        _zz_14 <= _zz_13;
       end
       if(chip_remoteCke)begin
-        _zz_27 <= _zz_26;
+        _zz_15 <= _zz_14;
       end
       chip_sdramCkeInternal <= chip_sdramCkeNext;
       chip_sdramCkeInternal_regNext <= chip_sdramCkeInternal;
@@ -2295,8 +1567,8 @@ module SdramCtrl (
       default : begin
         if(! refresh_pending) begin
           if(io_bus_cmd_valid)begin
-            if(! _zz_35) begin
-              if(_zz_36)begin
+            if(! _zz_23) begin
+              if(_zz_24)begin
                 if(_zz_5)begin
                   frontend_banks_0_row <= frontend_address_row;
                 end
@@ -2308,42 +1580,6 @@ module SdramCtrl (
                 end
                 if(_zz_8)begin
                   frontend_banks_3_row <= frontend_address_row;
-                end
-                if(_zz_9)begin
-                  frontend_banks_4_row <= frontend_address_row;
-                end
-                if(_zz_10)begin
-                  frontend_banks_5_row <= frontend_address_row;
-                end
-                if(_zz_11)begin
-                  frontend_banks_6_row <= frontend_address_row;
-                end
-                if(_zz_12)begin
-                  frontend_banks_7_row <= frontend_address_row;
-                end
-                if(_zz_13)begin
-                  frontend_banks_8_row <= frontend_address_row;
-                end
-                if(_zz_14)begin
-                  frontend_banks_9_row <= frontend_address_row;
-                end
-                if(_zz_15)begin
-                  frontend_banks_10_row <= frontend_address_row;
-                end
-                if(_zz_16)begin
-                  frontend_banks_11_row <= frontend_address_row;
-                end
-                if(_zz_17)begin
-                  frontend_banks_12_row <= frontend_address_row;
-                end
-                if(_zz_18)begin
-                  frontend_banks_13_row <= frontend_address_row;
-                end
-                if(_zz_19)begin
-                  frontend_banks_14_row <= frontend_address_row;
-                end
-                if(_zz_20)begin
-                  frontend_banks_15_row <= frontend_address_row;
                 end
               end
             end
@@ -2385,10 +1621,10 @@ module SdramCtrl (
       chip_sdram_WEn <= 1'b1;
       chip_sdram_DQ_write <= chip_cmd_payload_data;
       chip_sdram_DQ_writeEnable <= 32'h0;
-      chip_sdram_DQM[0] <= _zz_28;
-      chip_sdram_DQM[1] <= _zz_28;
-      chip_sdram_DQM[2] <= _zz_28;
-      chip_sdram_DQM[3] <= _zz_28;
+      chip_sdram_DQM[0] <= _zz_16;
+      chip_sdram_DQM[1] <= _zz_16;
+      chip_sdram_DQM[2] <= _zz_16;
+      chip_sdram_DQM[3] <= _zz_16;
       if(chip_cmd_valid)begin
         case(chip_cmd_payload_task)
           `SdramCtrlBackendTask_binary_sequential_PRECHARGE_ALL : begin
@@ -2411,7 +1647,7 @@ module SdramCtrl (
             chip_sdram_ADDR[6 : 4] <= 3'b010;
             chip_sdram_ADDR[8 : 7] <= 2'b00;
             chip_sdram_ADDR[9] <= 1'b0;
-            chip_sdram_BA <= 4'b0000;
+            chip_sdram_BA <= 2'b00;
             chip_sdram_CSn <= 1'b0;
             chip_sdram_RASn <= 1'b0;
             chip_sdram_CASn <= 1'b0;
