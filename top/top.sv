@@ -35,7 +35,6 @@ module top(
     
     output        MDC,
     inout         MDIO,
-    output        phy_rstn,
     
     inout  [3:0]  SD_DAT,
     inout         SD_CMD,
@@ -215,7 +214,6 @@ soc_top #(
     .md_i_0       (MDIO_i   ),
     .md_o_0       (MDIO_o   ),       
     .md_t_0       (MDIO_t   ),
-    .phy_rstn     (phy_rstn ),
     
     .sd_dat_i(SD_DAT_i),
     .sd_dat_o(SD_DAT_o),
