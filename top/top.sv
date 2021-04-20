@@ -2,12 +2,12 @@
 `include "iobuf_helper.svh"
 
 module top(
-    input cpu_clk,
-    input soc_clk,
-    input soc_aresetn,
+    input cpu_clk,                      // 150MHz CPU 时钟，后续修改为由 PLL 输出
+    input soc_clk,                      // 100MHz SoC 时钟，后续修改为由 PLL 输出
+    input soc_aresetn,                  // 外部复位输入
 
-    output              sdram_CLK,
-    output     [12:0]   sdram_ADDR,
+    output              sdram_CLK,      // SDRAM 时钟输出，等同于 SoC 时钟
+    output     [12:0]   sdram_ADDR,     // 以下为 sdram 各路信号
     output     [1:0]    sdram_BA,
     inout      [31:0]   sdram_DQ,
     output     [3:0]    sdram_DQM,
@@ -17,36 +17,36 @@ module top(
     output              sdram_RASn,
     output              sdram_WEn,
     
-    output        SPI_CLK,
-    output        SPI_CS,
-    inout         SPI_MISO,
-    inout         SPI_MOSI,
+    output        SPI_CLK,              // SPI 时钟，由 SoC 时钟分频得到
+    output  [3:0] SPI_CS,               // SPI 片选信号
+    inout         SPI_MISO,             // SPI 数据信号（1bit SPI: MISO，Dual SPI: IO1）
+    inout         SPI_MOSI,             // SPI 数据信号（1bit SPI：MOSI，Dual SPI: IO2）
     
-    inout         UART_RX,
+    inout         UART_RX,              // UART
     inout         UART_TX,
     
-    input         rmii_ref_clk,
-    output [1:0]  rmii_txd,
+    input         rmii_ref_clk,         // 50MHz 以太网 RMII 参考时钟输入，由外部以太网 Phy 给出
+    output [1:0]  rmii_txd,             // 以下 rmii 开头的信号均在 RMII 时钟域下
     output        rmii_tx_en,
 
     input  [1:0]  rmii_rxd,
     input         rmii_crs_rxdv,
     input         rmii_rx_err,
     
-    output        MDC,
-    inout         MDIO,
+    output        MDC,                  // MDIO 时钟（RMII 管理总线），由 SoC 时钟分频得到
+    inout         MDIO,                 // MDIO 数据
     
-    inout  [3:0]  SD_DAT,
-    inout         SD_CMD,
-    output        SD_CLK,
+    inout  [3:0]  SD_DAT,               // SDIO 数据输入 / 输出
+    inout         SD_CMD,               // SDIO 指令输入 / 输出
+    output        SD_CLK,               // SDIO 时钟输出，由 SoC 时钟分频得到
     
-    input         ULPI_clk,
-    inout  [7:0]  ULPI_data,
+    input         ULPI_clk,             // 60MHz USB ULPI 参考时钟，由外部 USB Phy 给出
+    inout  [7:0]  ULPI_data,            // 以下 ULPI 开头的信号均在 ULPI 时钟域下
     output        ULPI_stp,
     input         ULPI_dir,
     input         ULPI_nxt,
     
-    output          CDBUS_tx,
+    output          CDBUS_tx,           // CDBUS 总线信号，类似 UART 串口，属于 SoC 时钟域
     output          CDBUS_tx_en,
     input           CDBUS_rx
 );
@@ -146,8 +146,6 @@ AxiSdramCtrl sdram (
 
 
 
-wire [3:0] SPI_CS_M;
-assign SPI_CS = SPI_CS_M[0];
 soc_top #(
     .C_ASIC_SRAM(1)
 ) soc (
@@ -185,7 +183,7 @@ soc_top #(
     .mem_axi_rlast(mem_axi_rlast),
     .mem_axi_rvalid(mem_axi_rvalid),
     
-    .csn_o(SPI_CS_M),
+    .csn_o(SPI_CS),
     .sck_o(SPI_CLK),
     .sdo_i(SPI_MOSI_i),
     .sdo_o(SPI_MOSI_o),
