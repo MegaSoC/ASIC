@@ -2,9 +2,15 @@
 `include "iobuf_helper.svh"
 
 module top(
-    input cpu_clk,                      // 150MHz CPU 时钟，后续修改为由 PLL 输出
-    input soc_clk,                      // 100MHz SoC 时钟，后续修改为由 PLL 输出
-    input soc_aresetn,                  // 外部复位输入
+    input clk_25m,                      // 25MHz 外部时钟输入
+    input sys_rstn,                     // SoC 外部复位输入
+
+    input PLL_AVDD,                     // PLL 独立电源
+    input PLL_AVSS,                     // PLL 独立地线
+
+    input ctrl_rstn,                    // 系统控制器外部复位输入
+    inout i2c_sda,                      // 系统控制器 I2C 数据脚
+    input i2c_scl,                      // 系统控制器 I2C 时钟脚
 
     output              sdram_CLK,      // SDRAM 时钟输出，等同于 SoC 时钟
     output     [12:0]   sdram_ADDR,     // 以下为 sdram 各路信号
@@ -48,9 +54,37 @@ module top(
     
     output          CDBUS_tx,           // CDBUS 总线信号，类似 UART 串口，属于 SoC 时钟域
     output          CDBUS_tx_en,
-    input           CDBUS_rx
+    input           CDBUS_rx,
+
+    inout  [7:0] gpio
 );
 
+wire soc_clk;
+wire cpu_clk;
+wire soc_aresetn;
+
+wire [7:0]  CPU_PLL_MUL,
+            CPU_PLL_DIV, 
+            SOC_PLL_MUL, 
+            SOC_PLL_DIV,
+            PLL_CTRL,
+            SPI_DIV_CTRL,
+            DBG_CTRL,
+            RESERVED;
+
+wire [31:0] dat_ctrl_to_cfg,
+            dat_cfg_to_ctrl;
+wire [31:0] dat_ctrl_to_cfg_soc,
+            dat_cfg_to_ctrl_soc;
+wire [3:0]  spi_div_ctrl_soc;
+
+wire CPU_PLL_OE = PLL_CTRL[0], CPU_PLL_BP = PLL_CTRL[1], SOC_PLL_OE = PLL_CTRL[2], SOC_PLL_BP = PLL_CTRL[3], CTRL_SYS_RSTN = PLL_CTRL[4], CTRL_INTR = PLL_CTRL[5];
+
+stolen_cdc_sync_rst soc_rstgen(
+    .dest_clk(soc_clk),
+    .dest_rst(soc_aresetn),
+    .src_rst(sys_rstn || CTRL_SYS_RSTN)
+);
 
 // WARNING: en==0 means output, en==1 means input!!!
 `IOBUF_GEN_SIMPLE(UART_TX)
@@ -62,6 +96,86 @@ module top(
 `IOBUF_GEN_VEC_UNIFORM_SIMPLE(SD_DAT)
 `IOBUF_GEN_VEC_SIMPLE(ULPI_data)
 `IOBUF_GEN_VEC_SIMPLE(sdram_DQ)
+`IOBUF_GEN_SIMPLE(i2c_sda)
+`IOBUF_GEN_VEC_SIMPLE(gpio)
+
+assign i2c_sda_t = i2c_sda_o;
+
+wire i2c_rstn;
+stolen_cdc_sync_rst ctrl_rstgen(
+    .dest_clk(clk_25m),
+    .dest_rst(i2c_rstn),
+    .src_rst(ctrl_rstn)
+);
+
+
+i2cSlave #(
+    .C_NUM_OUTPUT_REGS(12),
+    .C_NUM_INPUT_REGS(4)
+) i2c_ctrl (
+  .clk     (clk_25m       ),
+  .rst     (~i2c_rstn     ),
+  .scl     (i2c_scl       ),
+  .sdaIn   (i2c_sda_i     ),
+  .sdaOut  (i2c_sda_o     ),
+  .outputs ({dat_ctrl_to_cfg[31:24], dat_ctrl_to_cfg[23:16], dat_ctrl_to_cfg[15:8], dat_ctrl_to_cfg[7:0], 
+             RESERVED, DBG_CTRL, SPI_DIV_CTRL, PLL_CTRL, SOC_PLL_DIV  , SOC_PLL_MUL, CPU_PLL_DIV  , CPU_PLL_MUL}),
+  .defaults({8'b0,                   8'b0,                   8'b0,                  8'b0,
+             8'b0    , 8'b101  , 8'b1000     , 8'b10101, {3'd1, 5'd23}, 8'd98      , {3'd1, 5'd23}, 8'd148     }),
+  .inputs  ({dat_cfg_to_ctrl[31:24], dat_cfg_to_ctrl[23:16], dat_cfg_to_ctrl[15:8], dat_cfg_to_ctrl[7:0]       })
+);
+
+
+S018PLLGS_LC CPU_PLL(
+  .AVDD(PLL_AVDD),
+  .AVSS(PLL_AVSS),
+  .XIN(clk_25m),
+  .CLK_OUT(cpu_clk),
+  .N(CPU_PLL_DIV[4:0]),
+  .M({1'b0, CPU_PLL_MUL}),
+  .PLL_TST(2'b0),
+  .RESET(1'b0),
+  .PD(~ctrl_rstn),
+  .OD({1'b0, CPU_PLL_DIV[7:5]}),
+  .BP(CPU_PLL_BP),
+  .OE(CPU_PLL_OE)
+);
+
+S018PLLGS_LC SOC_PLL(
+  .AVDD(PLL_AVDD),
+  .AVSS(PLL_AVSS),
+  .XIN(clk_25m),
+  .CLK_OUT(soc_clk),
+  .N(SOC_PLL_DIV[4:0]),
+  .M({1'b0, SOC_PLL_MUL}),
+  .PLL_TST(2'b0),
+  .RESET(1'b0),
+  .PD(~ctrl_rstn),
+  .OD({1'b0, SOC_PLL_DIV[7:5]}),
+  .BP(SOC_PLL_BP),
+  .OE(SOC_PLL_OE)
+);
+
+stolen_cdc_array_single #(2, 1, 32) dat_ctrl_to_cfg_sync (
+   .src_clk(clk_25m),
+   .src_in(dat_ctrl_to_cfg),
+   .dest_clk(soc_clk),
+   .dest_out(dat_ctrl_to_cfg_soc)
+);
+
+stolen_cdc_array_single #(2, 1, 32) dat_cfg_to_ctrl_sync (
+   .src_clk(soc_clk),
+   .src_in(dat_cfg_to_ctrl_soc),
+   .dest_clk(clk_25m),
+   .dest_out(dat_cfg_to_ctrl)
+);
+
+stolen_cdc_array_single #(2, 1, 4) spi_div_ctrl_sync (
+   .src_clk(clk_25m),
+   .src_in(SPI_DIV_CTRL[3:0]),
+   .dest_clk(soc_clk),
+   .dest_out(spi_div_ctrl_soc)
+);
 
 wire [5:0]  mem_axi_awid;
 wire [31:0] mem_axi_awaddr;
@@ -143,8 +257,6 @@ AxiSdramCtrl sdram (
         .io_sdram_RASn(sdram_RASn),
         .io_sdram_WEn(sdram_WEn)
 );
-
-
 
 soc_top #(
     .C_ASIC_SRAM(1)
@@ -231,7 +343,15 @@ soc_top #(
     
     .CDBUS_tx,
     .CDBUS_tx_en,
-    .CDBUS_rx
+    .CDBUS_rx,
+
+    .dat_cfg_to_ctrl(dat_cfg_to_ctrl_soc),
+    .dat_ctrl_to_cfg(dat_ctrl_to_cfg_soc),
+    .gpio_o(gpio_o),
+    .gpio_i(gpio_i),
+    .gpio_t(gpio_t),
+    .spi_div_ctrl(spi_div_ctrl_soc),
+    .intr_ctrl(CTRL_INTR)
 );
 
 endmodule
