@@ -121,7 +121,7 @@ i2cSlave #(
   .outputs ({dat_ctrl_to_cfg[31:24], dat_ctrl_to_cfg[23:16], dat_ctrl_to_cfg[15:8], dat_ctrl_to_cfg[7:0], 
              RESERVED, DBG_CTRL, SPI_DIV_CTRL, PLL_CTRL, SOC_PLL_DIV  , SOC_PLL_MUL, CPU_PLL_DIV  , CPU_PLL_MUL}),
   .defaults({8'b0,                   8'b0,                   8'b0,                  8'b0,
-             8'b0    , 8'b101  , 8'b1000     , 8'b10101, {3'd1, 5'd23}, 8'd98      , {3'd1, 5'd23}, 8'd148     }),
+             8'b0    , 8'b101  , 8'b0100     , 8'b0    , {3'd1, 5'd2} , 8'd30      , {3'd1, 5'd2}, 8'd46       }),
   .inputs  ({dat_cfg_to_ctrl[31:24], dat_cfg_to_ctrl[23:16], dat_cfg_to_ctrl[15:8], dat_cfg_to_ctrl[7:0]       })
 );
 
