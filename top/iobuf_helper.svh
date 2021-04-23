@@ -42,5 +42,47 @@ endgenerate
 
 `define IOBUF_GEN_VEC_UNIFORM_SIMPLE(IN) `IOBUF_GEN_VEC_UNIFORM(IN, IN)
 
+`define OPAD_GEN(IN, OUT) wire OUT``_c; \
+    PO16 IN``_buf ( \
+      .PAD(IN), \
+      .I(OUT``_c) \
+    );
+
+`define OPAD_GEN_SIMPLE(IN) `OPAD_GEN(IN, IN)
+
+`define OPAD_GEN_VEC(IN, OUT) wire [$bits(IN)-1:0] OUT``_c; \
+genvar IN``_gen_var; \
+generate \
+  for(IN``_gen_var = 0; IN``_gen_var < $bits(IN); IN``_gen_var = IN``_gen_var + 1) begin: IN``_buf_gen \
+    PO16 IN``_buf ( \
+      .PAD(IN[IN``_gen_var]), \
+      .I(OUT``_c[IN``_gen_var]) \
+    ); \
+  end \
+endgenerate
+
+`define OPAD_GEN_VEC_SIMPLE(IN) `OPAD_GEN_VEC(IN, IN)
+
+`define IPAD_GEN(IN, OUT) wire OUT``_c; \
+    PI IN``_buf ( \
+      .PAD(IN), \
+      .C(OUT``_c) \
+    );
+
+`define IPAD_GEN_SIMPLE(IN) `IPAD_GEN(IN, IN)
+
+`define IPAD_GEN_VEC(IN, OUT) wire [$bits(IN)-1:0] OUT``_c; \
+genvar IN``_gen_var; \
+generate \
+  for(IN``_gen_var = 0; IN``_gen_var < $bits(IN); IN``_gen_var = IN``_gen_var + 1) begin: IN``_buf_gen \
+    PI IN``_buf ( \
+      .PAD(IN[IN``_gen_var]), \
+      .C(OUT``_c[IN``_gen_var]) \
+    ); \
+  end \
+endgenerate
+
+`define IPAD_GEN_VEC_SIMPLE(IN) `IPAD_GEN_VEC(IN, IN)
+
 `endif
  

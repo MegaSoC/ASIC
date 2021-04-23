@@ -80,42 +80,80 @@ wire [3:0]  spi_div_ctrl_soc;
 
 wire CPU_PLL_OE = PLL_CTRL[0], CPU_PLL_BP = PLL_CTRL[1], SOC_PLL_OE = PLL_CTRL[2], SOC_PLL_BP = PLL_CTRL[3], CTRL_SYS_RSTN = PLL_CTRL[4], CTRL_INTR = PLL_CTRL[5];
 
+`IPAD_GEN_SIMPLE(clk_25m)
+`IPAD_GEN_SIMPLE(sys_rstn)
+`IPAD_GEN_SIMPLE(ctrl_rstn)
 stolen_cdc_sync_rst soc_rstgen(
     .dest_clk(soc_clk),
     .dest_rst(soc_aresetn),
-    .src_rst(sys_rstn || CTRL_SYS_RSTN)
+    .src_rst(sys_rstn_c || CTRL_SYS_RSTN)
 );
 
 // WARNING: en==0 means output, en==1 means input!!!
 `IOBUF_GEN_SIMPLE(UART_TX)
 `IOBUF_GEN_SIMPLE(UART_RX)
+`IOBUF_GEN_VEC_SIMPLE(gpio)
+
+`IOBUF_GEN_SIMPLE(i2c_sda)
+`IPAD_GEN_SIMPLE(i2c_scl)
+
+`OPAD_GEN_SIMPLE(sdram_CLK)
+`OPAD_GEN_VEC_SIMPLE(sdram_ADDR)
+`OPAD_GEN_VEC_SIMPLE(sdram_BA)
+`OPAD_GEN_VEC_SIMPLE(sdram_DQM)
+`IOBUF_GEN_VEC_SIMPLE(sdram_DQ)
+`OPAD_GEN_SIMPLE(sdram_CASn)
+`OPAD_GEN_SIMPLE(sdram_CKE)
+`OPAD_GEN_SIMPLE(sdram_CSn)
+`OPAD_GEN_SIMPLE(sdram_RASn)
+`OPAD_GEN_SIMPLE(sdram_WEn)
+
+`OPAD_GEN_SIMPLE(SPI_CLK)
+`OPAD_GEN_VEC_SIMPLE(SPI_CS)
 `IOBUF_GEN_SIMPLE(SPI_MISO)
 `IOBUF_GEN_SIMPLE(SPI_MOSI)
+
+`IPAD_GEN_SIMPLE(rmii_ref_clk)
+`OPAD_GEN_VEC_SIMPLE(rmii_txd)
+`OPAD_GEN_SIMPLE(rmii_tx_en)
+
+`IPAD_GEN_VEC_SIMPLE(rmii_rxd)
+`IPAD_GEN_SIMPLE(rmii_crs_rxdv)
+`IPAD_GEN_SIMPLE(rmii_rx_err)
+
+`OPAD_GEN_SIMPLE(MDC)
 `IOBUF_GEN_SIMPLE(MDIO)
+
+`OPAD_GEN_SIMPLE(SD_CLK)
 `IOBUF_GEN_SIMPLE(SD_CMD)
 `IOBUF_GEN_VEC_UNIFORM_SIMPLE(SD_DAT)
+
+`IPAD_GEN_SIMPLE(ULPI_clk)
 `IOBUF_GEN_VEC_SIMPLE(ULPI_data)
-`IOBUF_GEN_VEC_SIMPLE(sdram_DQ)
-`IOBUF_GEN_SIMPLE(i2c_sda)
-`IOBUF_GEN_VEC_SIMPLE(gpio)
+`OPAD_GEN_SIMPLE(ULPI_stp)
+`IPAD_GEN_SIMPLE(ULPI_dir)
+`IPAD_GEN_SIMPLE(ULPI_nxt)
+
+`OPAD_GEN_SIMPLE(CDBUS_tx)
+`OPAD_GEN_SIMPLE(CDBUS_tx_en)
+`IPAD_GEN_SIMPLE(CDBUS_rx)
 
 assign i2c_sda_t = i2c_sda_o;
 
 wire i2c_rstn;
 stolen_cdc_sync_rst ctrl_rstgen(
-    .dest_clk(clk_25m),
+    .dest_clk(clk_25m_c),
     .dest_rst(i2c_rstn),
-    .src_rst(ctrl_rstn)
+    .src_rst(ctrl_rstn_c)
 );
-
 
 i2cSlave #(
     .C_NUM_OUTPUT_REGS(12),
     .C_NUM_INPUT_REGS(4)
 ) i2c_ctrl (
-  .clk     (clk_25m       ),
+  .clk     (clk_25m_c     ),
   .rst     (~i2c_rstn     ),
-  .scl     (i2c_scl       ),
+  .scl     (i2c_scl_c     ),
   .sdaIn   (i2c_sda_i     ),
   .sdaOut  (i2c_sda_o     ),
   .outputs ({dat_ctrl_to_cfg[31:24], dat_ctrl_to_cfg[23:16], dat_ctrl_to_cfg[15:8], dat_ctrl_to_cfg[7:0], 
@@ -129,13 +167,13 @@ i2cSlave #(
 S018PLLGS_LC CPU_PLL(
   .AVDD(PLL_AVDD),
   .AVSS(PLL_AVSS),
-  .XIN(clk_25m),
+  .XIN(clk_25m_c),
   .CLK_OUT(cpu_clk),
   .N(CPU_PLL_DIV[4:0]),
   .M({1'b0, CPU_PLL_MUL}),
   .PLL_TST(2'b0),
   .RESET(1'b0),
-  .PD(~ctrl_rstn),
+  .PD(1'b0),
   .OD({1'b0, CPU_PLL_DIV[7:5]}),
   .BP(CPU_PLL_BP),
   .OE(CPU_PLL_OE)
@@ -144,20 +182,20 @@ S018PLLGS_LC CPU_PLL(
 S018PLLGS_LC SOC_PLL(
   .AVDD(PLL_AVDD),
   .AVSS(PLL_AVSS),
-  .XIN(clk_25m),
+  .XIN(clk_25m_c),
   .CLK_OUT(soc_clk),
   .N(SOC_PLL_DIV[4:0]),
   .M({1'b0, SOC_PLL_MUL}),
   .PLL_TST(2'b0),
   .RESET(1'b0),
-  .PD(~ctrl_rstn),
+  .PD(1'b0),
   .OD({1'b0, SOC_PLL_DIV[7:5]}),
   .BP(SOC_PLL_BP),
   .OE(SOC_PLL_OE)
 );
 
 stolen_cdc_array_single #(2, 1, 32) dat_ctrl_to_cfg_sync (
-   .src_clk(clk_25m),
+   .src_clk(clk_25m_c),
    .src_in(dat_ctrl_to_cfg),
    .dest_clk(soc_clk),
    .dest_out(dat_ctrl_to_cfg_soc)
@@ -166,12 +204,12 @@ stolen_cdc_array_single #(2, 1, 32) dat_ctrl_to_cfg_sync (
 stolen_cdc_array_single #(2, 1, 32) dat_cfg_to_ctrl_sync (
    .src_clk(soc_clk),
    .src_in(dat_cfg_to_ctrl_soc),
-   .dest_clk(clk_25m),
+   .dest_clk(clk_25m_c),
    .dest_out(dat_cfg_to_ctrl)
 );
 
 stolen_cdc_array_single #(2, 1, 4) spi_div_ctrl_sync (
-   .src_clk(clk_25m),
+   .src_clk(clk_25m_c),
    .src_in(SPI_DIV_CTRL[3:0]),
    .dest_clk(soc_clk),
    .dest_out(spi_div_ctrl_soc)
@@ -207,7 +245,7 @@ wire [1:0]  mem_axi_rresp;
 wire        mem_axi_rlast;
 wire        mem_axi_rvalid;
 
-assign sdram_CLK = soc_clk;
+assign sdram_CLK_c = soc_clk;
 
 wire [31:0] sdram_DQ_we;
 assign sdram_DQ_t = ~sdram_DQ_we;
@@ -245,17 +283,17 @@ AxiSdramCtrl sdram (
         .io_bus_r_payload_resp(mem_axi_rresp),
         .io_bus_r_payload_last(mem_axi_rlast),
 
-        .io_sdram_ADDR(sdram_ADDR),
-        .io_sdram_BA(sdram_BA),
+        .io_sdram_ADDR(sdram_ADDR_c),
+        .io_sdram_BA(sdram_BA_c),
         .io_sdram_DQ_read(sdram_DQ_i),
         .io_sdram_DQ_write(sdram_DQ_o),
         .io_sdram_DQ_writeEnable(sdram_DQ_we),
-        .io_sdram_DQM(sdram_DQM),
-        .io_sdram_CASn(sdram_CASn),
-        .io_sdram_CKE(sdram_CKE),
-        .io_sdram_CSn(sdram_CSn),
-        .io_sdram_RASn(sdram_RASn),
-        .io_sdram_WEn(sdram_WEn)
+        .io_sdram_DQM(sdram_DQM_c),
+        .io_sdram_CASn(sdram_CASn_c),
+        .io_sdram_CKE(sdram_CKE_c),
+        .io_sdram_CSn(sdram_CSn_c),
+        .io_sdram_RASn(sdram_RASn_c),
+        .io_sdram_WEn(sdram_WEn_c)
 );
 
 soc_top #(
@@ -295,8 +333,8 @@ soc_top #(
     .mem_axi_rlast(mem_axi_rlast),
     .mem_axi_rvalid(mem_axi_rvalid),
     
-    .csn_o(SPI_CS),
-    .sck_o(SPI_CLK),
+    .csn_o(SPI_CS_c),
+    .sck_o(SPI_CLK_c),
     .sdo_i(SPI_MOSI_i),
     .sdo_o(SPI_MOSI_o),
     .sdo_en(SPI_MOSI_t),  // Notice: en==0 means output, en==1 means input!
@@ -311,16 +349,16 @@ soc_top #(
     .uart_rxd_o(UART_RX_o),
     .uart_rxd_en(UART_RX_t),
     
-    .rmii_ref_clk (rmii_ref_clk   ),
-    .rmii_txd     (rmii_txd       ),    
-    .rmii_tx_en   (rmii_tx_en     ),   
+    .rmii_ref_clk (rmii_ref_clk_c ),
+    .rmii_txd     (rmii_txd_c     ),    
+    .rmii_tx_en   (rmii_tx_en_c   ),   
 
-    .rmii_rxd     (rmii_rxd       ),    
-    .rmii_crs_rxdv(rmii_crs_rxdv  ),   
-    .rmii_rx_err  (rmii_rx_err    ),  
+    .rmii_rxd     (rmii_rxd_c     ),    
+    .rmii_crs_rxdv(rmii_crs_rxdv_c),   
+    .rmii_rx_err  (rmii_rx_err_c  ),  
 
     // MDIO
-    .mdc_0        (MDC      ),
+    .mdc_0        (MDC_c    ),
     .md_i_0       (MDIO_i   ),
     .md_o_0       (MDIO_o   ),       
     .md_t_0       (MDIO_t   ),
@@ -331,19 +369,19 @@ soc_top #(
     .sd_cmd_i(SD_CMD_i),
     .sd_cmd_o(SD_CMD_o),
     .sd_cmd_t(SD_CMD_t),
-    .sd_clk  (SD_CLK  ),
+    .sd_clk  (SD_CLK_c),
     
-    .ULPI_clk,
+    .ULPI_clk(ULPI_clk_c),
     .ULPI_data_i,
     .ULPI_data_o,
     .ULPI_data_t,
-    .ULPI_stp,
-    .ULPI_dir,
-    .ULPI_nxt,
+    .ULPI_stp(ULPI_stp_c),
+    .ULPI_dir(ULPI_dir_c),
+    .ULPI_nxt(ULPI_nxt_c),
     
-    .CDBUS_tx,
-    .CDBUS_tx_en,
-    .CDBUS_rx,
+    .CDBUS_tx(CDBUS_tx_c),
+    .CDBUS_tx_en(CDBUS_tx_en_c),
+    .CDBUS_rx(CDBUS_rx_c),
 
     .dat_cfg_to_ctrl(dat_cfg_to_ctrl_soc),
     .dat_ctrl_to_cfg(dat_ctrl_to_cfg_soc),
