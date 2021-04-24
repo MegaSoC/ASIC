@@ -5,9 +5,6 @@ module top(
     input clk_25m,                      // 25MHz 外部时钟输入
     input sys_rstn,                     // SoC 外部复位输入
 
-    input PLL_AVDD,                     // PLL 独立电源
-    input PLL_AVSS,                     // PLL 独立地线
-
     input ctrl_rstn,                    // 系统控制器外部复位输入
     inout i2c_sda,                      // 系统控制器 I2C 数据脚
     input i2c_scl,                      // 系统控制器 I2C 时钟脚
@@ -159,14 +156,12 @@ i2cSlave #(
   .outputs ({dat_ctrl_to_cfg[31:24], dat_ctrl_to_cfg[23:16], dat_ctrl_to_cfg[15:8], dat_ctrl_to_cfg[7:0], 
              RESERVED, DBG_CTRL, SPI_DIV_CTRL, PLL_CTRL, SOC_PLL_DIV  , SOC_PLL_MUL, CPU_PLL_DIV  , CPU_PLL_MUL}),
   .defaults({8'b0,                   8'b0,                   8'b0,                  8'b0,
-             8'b0    , 8'b101  , 8'b0100     , 8'b0    , {3'd1, 5'd2} , 8'd30      , {3'd1, 5'd2}, 8'd46       }),
+             8'b0    , 8'b101  , 8'b0100     , 8'b0    , {3'd1, 5'd1} , 8'd30      , {3'd1, 5'd2}, 8'd46       }),
   .inputs  ({dat_cfg_to_ctrl[31:24], dat_cfg_to_ctrl[23:16], dat_cfg_to_ctrl[15:8], dat_cfg_to_ctrl[7:0]       })
 );
 
 
 S018PLLGS_LC CPU_PLL(
-  .AVDD(PLL_AVDD),
-  .AVSS(PLL_AVSS),
   .XIN(clk_25m_c),
   .CLK_OUT(cpu_clk),
   .N(CPU_PLL_DIV[4:0]),
@@ -180,8 +175,6 @@ S018PLLGS_LC CPU_PLL(
 );
 
 S018PLLGS_LC SOC_PLL(
-  .AVDD(PLL_AVDD),
-  .AVSS(PLL_AVSS),
   .XIN(clk_25m_c),
   .CLK_OUT(soc_clk),
   .N(SOC_PLL_DIV[4:0]),
