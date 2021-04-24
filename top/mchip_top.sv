@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 `include "iobuf_helper.svh"
 
-module top(
+module mchip_top (
     input clk_25m,                      // 25MHz 外部时钟输入
     input sys_rstn,                     // SoC 外部复位输入
 
