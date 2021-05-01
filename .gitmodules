@@ -50,3 +50,7 @@
 	path = modules/Synopsys-DWC_otg
 	url = git@github.com:SoCBlaze/Synopsys-DWC_otg.git
 	branch = master
+[submodule "modules/opencores-i2c"]
+	path = modules/opencores-i2c
+	url = git@github.com:SoCBlaze/opencores-i2c.git
+	branch = master
