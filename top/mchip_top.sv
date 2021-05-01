@@ -53,7 +53,10 @@ module mchip_top (
     output          CDBUS_tx_en,
     input           CDBUS_rx,
 
-    inout  [7:0] gpio
+    inout  [7:0] gpio,
+
+    output [3:0] DBG_data,
+    output       DBG_clk
 );
 
 wire soc_clk;
@@ -134,6 +137,9 @@ stolen_cdc_sync_rst soc_rstgen(
 `OPAD_GEN_SIMPLE(CDBUS_tx)
 `OPAD_GEN_SIMPLE(CDBUS_tx_en)
 `IPAD_GEN_SIMPLE(CDBUS_rx)
+
+`OPAD_GEN_T_SIMPLE(DBG_clk)
+`OPAD_GEN_VEC_T_UNIFORM_SIMPLE(DBG_data)
 
 assign i2c_sda_t = i2c_sda_o;
 
@@ -382,8 +388,15 @@ soc_top #(
     .gpio_i(gpio_i),
     .gpio_t(gpio_t),
     .spi_div_ctrl(spi_div_ctrl_soc),
-    .intr_ctrl(CTRL_INTR)
+    .intr_ctrl(CTRL_INTR),
+
+    .debug_output_data(DBG_data_c),
+    .debug_output_mode(DBG_CTRL[1:0])
 );
+
+assign DBG_data_t = ~DBG_CTRL[2];
+assign DBG_clk_t = ~DBG_CTRL[2];
+assign DBG_clk_c = cpu_clk;
 
 endmodule
 

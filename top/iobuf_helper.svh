@@ -63,6 +63,30 @@ endgenerate
 
 `define OPAD_GEN_VEC_SIMPLE(IN) `OPAD_GEN_VEC(IN, IN)
 
+`define OPAD_GEN_T(IN, OUT) wire OUT``_c; \
+    POT16 IN``_buf ( \
+      .PAD(IN), \
+      .I(OUT``_c), \
+      .OEN(OUT``_t) \
+    );
+
+`define OPAD_GEN_T_SIMPLE(IN) `OPAD_GEN_T(IN, IN)
+
+`define OPAD_GEN_VEC_T_UNIFORM(IN, OUT) wire [$bits(IN)-1:0] OUT``_c; \
+wire OUT``_t; \
+genvar IN``_gen_var; \
+generate \
+  for(IN``_gen_var = 0; IN``_gen_var < $bits(IN); IN``_gen_var = IN``_gen_var + 1) begin: IN``_buf_gen \
+    POT16 IN``_buf ( \
+      .PAD(IN[IN``_gen_var]), \
+      .I(OUT``_c[IN``_gen_var]), \
+      .OEN(OUT``_t) \
+    ); \
+  end \
+endgenerate
+
+`define OPAD_GEN_VEC_T_UNIFORM_SIMPLE(IN) `OPAD_GEN_VEC_T_UNIFORM(IN, IN)
+
 `define IPAD_GEN(IN, OUT) wire OUT``_c; \
     PI IN``_buf ( \
       .PAD(IN), \
