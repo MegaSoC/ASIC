@@ -63,7 +63,7 @@ endgenerate
 
 `define OPAD_GEN_VEC_SIMPLE(IN) `OPAD_GEN_VEC(IN, IN)
 
-`define OPAD_GEN_T(IN, OUT) wire OUT``_c; \
+`define OPAD_GEN_T(IN, OUT) wire OUT``_c, OUT``_t; \
     POT16 IN``_buf ( \
       .PAD(IN), \
       .I(OUT``_c), \
