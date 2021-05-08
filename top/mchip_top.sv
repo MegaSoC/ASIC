@@ -9,6 +9,10 @@ module mchip_top (
     inout i2c_sda,                      // 系统控制器 I2C 数据脚
     input i2c_scl,                      // 系统控制器 I2C 时钟脚
 
+    output soc_rstn,
+    output cpu_rstn,
+    output cpu_grst,
+
     output              sdram_CLK,      // SDRAM 时钟输出，等同于 SoC 时钟
     output     [12:0]   sdram_ADDR,     // 以下为 sdram 各路信号
     output     [1:0]    sdram_BA,
@@ -119,6 +123,10 @@ stolen_cdc_sync_rst soc_rstgen(
 `IPAD_GEN_SIMPLE(rmii_ref_clk)
 `OPAD_GEN_VEC_SIMPLE(rmii_txd)
 `OPAD_GEN_SIMPLE(rmii_tx_en)
+
+`OPAD_GEN_SIMPLE(cpu_rstn)
+`OPAD_GEN_SIMPLE(soc_rstn)
+`OPAD_GEN_SIMPLE(cpu_grst)
 
 `IPAD_GEN_VEC_SIMPLE(rmii_rxd)
 `IPAD_GEN_SIMPLE(rmii_crs_rxdv)
@@ -407,6 +415,10 @@ soc_top #(
 	  .i2cm_sda_o,
 	  .i2cm_sda_t
 );
+
+assign cpu_rstn_c = soc.cpu.cpu_rstgen.dest_rst;
+assign soc_rstn_c = soc_aresetn;
+assign cpu_grst_c = soc.cpu.cpu_mid.global_reset;
 
 assign DBG_data_t = ~DBG_CTRL[2];
 assign DBG_clk_t = ~DBG_CTRL[2];
