@@ -413,12 +413,11 @@ soc_top #(
 
 	  .i2cm_sda_i,
 	  .i2cm_sda_o,
-	  .i2cm_sda_t
+	  .i2cm_sda_t,
+    .cpu_aresetn(cpu_rstn_c),
+    .cpu_global_reset(cpu_grst_c)
 );
-
-assign cpu_rstn_c = soc.cpu.cpu_rstgen.dest_rst;
 assign soc_rstn_c = soc_aresetn;
-assign cpu_grst_c = soc.cpu.cpu_mid.global_reset;
 
 assign DBG_data_t = ~DBG_CTRL[2];
 assign DBG_clk_t = ~DBG_CTRL[2];
