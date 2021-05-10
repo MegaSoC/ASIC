@@ -50,6 +50,15 @@ endgenerate
 
 `define OPAD_GEN_SIMPLE(IN) `OPAD_GEN(IN, IN)
 
+`define OEPAD_GEN(IN, OUT) wire OUT``_c, OUT``_t; \
+    POT16 IN``_buf ( \
+      .PAD(IN), \
+      .I(OUT``_c), \
+      .OEN(OUT``_t) \
+    );
+
+`define OEPAD_GEN_SIMPLE(IN) `OEPAD_GEN(IN, IN)
+
 `define OPAD_GEN_VEC(IN, OUT) wire [$bits(IN)-1:0] OUT``_c; \
 genvar IN``_gen_var; \
 generate \

@@ -145,8 +145,8 @@ stolen_cdc_sync_rst soc_rstgen(
 `IPAD_GEN_SIMPLE(ULPI_dir)
 `IPAD_GEN_SIMPLE(ULPI_nxt)
 
-`OPAD_GEN_SIMPLE(CDBUS_tx)
-`OPAD_GEN_SIMPLE(CDBUS_tx_en)
+`OEPAD_GEN_SIMPLE(CDBUS_tx)
+`OEPAD_GEN_SIMPLE(CDBUS_tx_en)
 `IPAD_GEN_SIMPLE(CDBUS_rx)
 
 `OPAD_GEN_T_SIMPLE(DBG_clk)
@@ -393,7 +393,9 @@ soc_top #(
     .ULPI_nxt(ULPI_nxt_c),
     
     .CDBUS_tx(CDBUS_tx_c),
+    .CDBUS_tx_t(CDBUS_tx_t),
     .CDBUS_tx_en(CDBUS_tx_en_c),
+    .CDBUS_tx_en_t(CDBUS_tx_en_t),
     .CDBUS_rx(CDBUS_rx_c),
 
     .dat_cfg_to_ctrl(dat_cfg_to_ctrl_soc),
